@@ -32,72 +32,71 @@ ApplicationWindow {
     }
     }`
 
-    // Settings {
-    //     id: appSettings
-    //     property alias code: pathEdit.text
-    // }
+    Settings {
+        id: appSettings
+        property alias code: pathEdit.text
+    }
 
-    // SplitView {
-    //     anchors.fill: parent
-    //     orientation: Qt.Horizontal
+    SplitView {
+        anchors.fill: parent
+        orientation: Qt.Horizontal
 
-    //     ColumnLayout {
-    //         id: pathLayout
-    //         Layout.fillHeight: true
-    //         Layout.fillWidth: true
-    //         TextEdit {
-    //             id: pathEdit
-    //             text: exampleCode
-    //             Layout.fillHeight: true
-    //             Layout.fillWidth: true
-    //             onEditingFinished: updateItem()
-    //             Component.onCompleted: {
-    //                 updateItem()
-    //             }
-    //             function updateItem() {
-    //                 userParentItem.create(pathEdit.text)
-    //             }
+        ColumnLayout {
+            id: pathLayout
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            TextEdit {
+                id: pathEdit
+                text: exampleCode
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                onEditingFinished: updateItem()
+                Component.onCompleted: {
+                    updateItem()
+                }
+                function updateItem() {
+                    userParentItem.create(pathEdit.text)
+                }
 
-    //             Shortcut {
-    //                 sequence: "Ctrl+S"
-    //                 onActivated: pathEdit.updateItem()
-    //             }
-    //         }
-    //         Button {
-    //             id: pathEditButton
-    //             Layout.fillWidth: true
-    //             text: "ok!"
-    //             onClicked: pathEdit.updateItem()
-    //         }
-    //     }
+                Shortcut {
+                    sequence: "Ctrl+S"
+                    onActivated: pathEdit.updateItem()
+                }
+            }
+            Button {
+                id: pathEditButton
+                Layout.fillWidth: true
+                text: "ok!"
+                onClicked: pathEdit.updateItem()
+            }
+        }
 
-    //     CadScene {
-    //         Layout.fillHeight: true
-    //         Layout.fillWidth: true
+        CadScene {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
 
-    //         Item {
-    //             id: userParentItem
-    //             width: 300
-    //             height: 300
-    //             property var userItem: null
+            Item {
+                id: userParentItem
+                width: 300
+                height: 300
+                property var userItem: null
 
-    //             function create(textComponent) {
-    //                 if (userItem) {
-    //                     userItem.destroy()
-    //                 }
-    //                 userItem = Qt.createQmlObject(textComponent,
-    //                                               userParentItem, "userItem")
-    //             }
-    //         }
-    //     }
-    // }
+                function create(textComponent) {
+                    if (userItem) {
+                        userItem.destroy()
+                    }
+                    userItem = Qt.createQmlObject(textComponent,
+                                                  userParentItem, "userItem")
+                }
+            }
+        }
+    }
     WebView {
         id: webView
         x: 0
         y: 0
-        z: 1
-        width: 400
-        height: 400
-        url: "http://www.onet.pl"
+        width: 200
+        height: 200
+        url: "https://ace.c9.io/build/kitchen-sink.html"
     }
 }

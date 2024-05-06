@@ -4,7 +4,7 @@ project(Flex3D VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Quick Quick3D WebView Positioning WebChannel)
+find_package(Qt6 REQUIRED COMPONENTS Core Quick Quick3D WebView)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -37,8 +37,6 @@ target_link_libraries(appFlex3D PRIVATE
     Qt6::Quick
     Qt6::Quick3D
     Qt6::WebView
-    Qt6::Positioning
-    Qt6::WebChannel
 )
 
 include(GNUInstallDirs)
