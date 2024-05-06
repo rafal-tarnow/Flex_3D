@@ -3,7 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtCore
 import QtQuick3D
-import QtWebView
+//import QtWebView
+import QtWebEngine
 
 ApplicationWindow {
     width: 640
@@ -91,12 +92,22 @@ ApplicationWindow {
             }
         }
     }
-    WebView {
-        id: webView
+
+    WebEngineView {
         x: 0
         y: 0
-        width: 200
-        height: 200
+        z: 2
+        width: 400
+        height: 400
         url: "https://ace.c9.io/build/kitchen-sink.html"
     }
+
+    // WebView {
+    //     x: 0
+    //     y: 0
+    //     z: 2
+    //     width: 400
+    //     height: 400
+    //     url: "https://ace.c9.io/build/kitchen-sink.html"
+    // }
 }

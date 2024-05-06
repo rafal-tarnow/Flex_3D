@@ -2,11 +2,15 @@
 #include <QQmlApplicationEngine>
 #include <QQuickTextDocument>
 #include <QTextOption>
-#include <QtWebView>
+//#include <QtWebView/QtWebView>>
+#include <QtWebEngineQuick>
+
 
 int main(int argc, char *argv[])
 {
-    QtWebView::initialize();
+    //QtWebView::initialize();
+    //QtWebEngineQuick::initialize();
+    QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
     app.setOrganizationName("Flex3D");
     app.setOrganizationDomain("flex3d.com");
