@@ -4,7 +4,10 @@ import QtQuick.Layouts
 import QtCore
 import QtQuick3D
 //import QtWebView
-import QtWebEngine
+import Flex3D.Editors.SimpleEditor 1.0
+import Flex3D.Editors.AceSampleWebEngineEditor 1.0
+import Flex3D.Editors.AceSampleWebViewEditor 1.0
+import Flex3D.Editors.BaseEditor 1.0
 
 ApplicationWindow {
     width: 640
@@ -33,20 +36,28 @@ ApplicationWindow {
     }
     }`
 
+    Component.onCompleted:{
+        editorSplitView.restoreState(appSettings.editorSplitView);
+    }
+    Component.onDestruction:{
+        appSettings.editorSplitView = editorSplitView.saveState();
+    }
+
     Settings {
         id: appSettings
         property alias code: pathEdit.text
+        property var editorSplitView
     }
 
     SplitView {
+        id: editorSplitView
         anchors.fill: parent
         orientation: Qt.Horizontal
 
         ColumnLayout {
             id: pathLayout
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            TextEdit {
+            SplitView.preferredWidth: 400
+            AceSampleWebEngineEditor {
                 id: pathEdit
                 text: exampleCode
                 Layout.fillHeight: true
@@ -93,14 +104,14 @@ ApplicationWindow {
         }
     }
 
-    WebEngineView {
-        x: 0
-        y: 0
-        z: 2
-        width: 400
-        height: 400
-        url: "https://ace.c9.io/build/kitchen-sink.html"
-    }
+    // WebEngineView {
+    //     x: 0
+    //     y: 0
+    //     z: 2
+    //     width: 400
+    //     height: 400
+    //     url: "https://ace.c9.io/build/kitchen-sink.html"
+    // }
 
     // WebView {
     //     x: 0
