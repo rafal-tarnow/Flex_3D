@@ -49,6 +49,7 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 add_subdirectory(Flex3D/Editors/SimpleEditor/)
+add_subdirectory(Flex3D/Editors/AceWebViewEditor/)
 add_subdirectory(Flex3D/Editors/AceSampleWebEngineEditor/)
 add_subdirectory(Flex3D/Editors/AceSampleWebViewEditor/)
 add_subdirectory(Flex3D/Editors/BaseEditor/)

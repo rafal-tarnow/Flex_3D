@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickTextDocument>
 #include <QTextOption>
-#include <QtWebView/QtWebView>>
+#include <QtWebView/QtWebView>
 #include <QtWebEngineQuick>
 
 

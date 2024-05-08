@@ -7,6 +7,7 @@ import QtQuick3D
 import Flex3D.Editors.SimpleEditor 1.0
 import Flex3D.Editors.AceSampleWebEngineEditor 1.0
 import Flex3D.Editors.AceSampleWebViewEditor 1.0
+import Flex3D.Editors.AceWebViewEditor 1.0
 import Flex3D.Editors.BaseEditor 1.0
 
 ApplicationWindow {
@@ -57,7 +58,7 @@ ApplicationWindow {
         ColumnLayout {
             id: pathLayout
             SplitView.preferredWidth: 400
-            AceSampleWebEngineEditor {
+            AceWebViewEditor {
                 id: pathEdit
                 text: exampleCode
                 Layout.fillHeight: true
