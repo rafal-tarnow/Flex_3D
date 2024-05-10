@@ -3,7 +3,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtCore
 import QtQuick3D
-//import QtWebView
 import Flex3D.Editors.SimpleEditor 1.0
 import Flex3D.Editors.AceSampleWebEngineEditor 1.0
 import Flex3D.Editors.AceSampleWebViewEditor 1.0
@@ -11,43 +10,24 @@ import Flex3D.Editors.AceWebViewEditor 1.0
 import Flex3D.Editors.BaseEditor 1.0
 
 ApplicationWindow {
-    width: 640
-    height: 480
-    visible: true
     title: qsTr("Flex 3D")
+    visible: true
+    visibility: "Maximized"
+    width: 1280
+    height: 800
+    x: 0
+    y: 0
 
-    property string exampleCode:
-`import QtQuick 2.7
-import QtQuick.Controls 2.3
-
-Rectangle {
-    color: "red"
-    anchors.fill: parent
-    Text {
-        text: "WEEEEEEEEEEHOOOOOOO"
-        font.pixelSize: 50
-        color: "white"
-        anchors.centerIn: parent
-        RotationAnimator on rotation {
-            running: true
-            loops: Animation.Infinite
-            from: 0
-            to: 360
-            duration: 700
-        }
+    Component.onCompleted: {
+        editorSplitView.restoreState(appSettings.editorSplitView)
     }
-}`
-
-    Component.onCompleted:{
-        editorSplitView.restoreState(appSettings.editorSplitView);
-    }
-    Component.onDestruction:{
-        appSettings.editorSplitView = editorSplitView.saveState();
+    Component.onDestruction: {
+        appSettings.editorSplitView = editorSplitView.saveState()
     }
 
     Settings {
         id: appSettings
-        //property alias code: pathEdit.text
+        property string code
         property var editorSplitView
     }
 
@@ -59,29 +39,54 @@ Rectangle {
         ColumnLayout {
             id: pathLayout
             SplitView.preferredWidth: 400
+            Row {
+                Layout.fillHeight: false
+                Button {
+                    text: "Save"
+                    onClicked: {
+                        pathEdit.save()
+                    }
+                }
+                Button {
+                    text: "Format"
+                    onClicked: {
+                        pathEdit.format()
+                    }
+                }
+                Button {
+                    text: "Run"
+                    onClicked: {
+                        pathEdit.run()
+                    }
+                }
+            }
+
             AceWebViewEditor {
                 id: pathEdit
-                text: exampleCode
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                onEditingFinished: updateItem()
+                onEditingFinished: run()
                 Component.onCompleted: {
-                    updateItem()
+                    text = appSettings.code
+                    run()
                 }
-                function updateItem() {
-                    userParentItem.create(pathEdit.text)
+                function save() {
+                    pathEdit.requestText(function (editorText) {
+                        appSettings.code = editorText
+                    })
+                }
+
+                function run() {
+                    pathEdit.requestText(function (editorText) {
+                        userParentItem.create(editorText)
+                        appSettings.code = editorText
+                    })
                 }
 
                 Shortcut {
                     sequence: "Ctrl+S"
-                    onActivated: pathEdit.updateItem()
+                    onActivated: pathEdit.run()
                 }
-            }
-            Button {
-                id: pathEditButton
-                Layout.fillWidth: true
-                text: "ok!"
-                onClicked: pathEdit.updateItem()
             }
         }
 

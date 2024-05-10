@@ -4,30 +4,48 @@ import QtWebView
 import QtWebEngine
 import Flex3D.Editors.BaseEditor
 
-BaseEditor{
-    id:root
+BaseEditor {
+    id: root
     WebEngineView {
         id: webContent
         anchors.fill: parent
         url: "qrc:/ide.html"
-        property bool firstTimeTextLoaded: false
+        property bool pageLoaded: false
 
         function setEditorText(text) {
-            if(firstTimeTextLoaded){
-                runJavaScript('editor.setValue(' + JSON.stringify(text) + ');');
+            if (pageLoaded) {
+                runJavaScript('setText(' + JSON.stringify(text) + ');')
             }
         }
 
-        onLoadingChanged:function(loadingInfo){
+        onLoadingChanged: function (loadingInfo) {
             //Calling the script loading the text must occur after the page is loaded, calling the script earlier causes a reference error to the Ace editor.
-            if(loadingInfo.status === WebEngineView.LoadSucceededStatus){
-                webContent.firstTimeTextLoaded = true;
-                webContent.setEditorText(root.text);
+            if (loadingInfo.status === WebEngineView.LoadSucceededStatus) {
+                webContent.pageLoaded = true
+                webContent.setEditorText(root.text)
             }
+        }
+
+        function requestText(callback) {
+            if (pageLoaded)
+                runJavaScript('editor.getValue();', callback)
+            else
+                console.warn("WARNING: Try request text before page loaded!")
+        }
+
+        function format() {
+            runJavaScript('format();')
         }
     }
 
     onTextChanged: {
-        webContent.setEditorText(root.text);
+        webContent.setEditorText(root.text)
+    }
+
+    function requestText(callback) {
+        return webContent.requestText(callback)
+    }
+    function format() {
+        webContent.format()
     }
 }

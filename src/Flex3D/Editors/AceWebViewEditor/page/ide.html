@@ -9,13 +9,28 @@
 
     <script src="js/lib/ace.js"></script>
     <script src="js/lib/theme-monokai.js"></script>
+    <script src="js/lib/ext-beautify.js"></script>
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/qml");
+        editor.session.setTabSize(4);
+        editor.session.setUseSoftTabs(false);
         editor.setOptions({
-            fontSize: "18px"
+            fontSize: "14px"
         });
+
+        function setText(text) {
+            editor.setValue(text);
+            editor.moveCursorToPosition({row: 0, column: 0});
+        }
+
+        function format() {
+            let cursorPosition = editor.selection.getCursor();
+            var beautify = ace.require("ace/ext/beautify");
+            beautify.beautify(editor.session);
+            editor.moveCursorTo(cursorPosition.row, cursorPosition.column);
+        }
     </script>
 </body>
 </html>

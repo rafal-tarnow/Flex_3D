@@ -5,15 +5,17 @@
 #include <QtWebView/QtWebView>
 #include <QtWebEngineQuick>
 
-
 int main(int argc, char *argv[])
 {
+    QSettings::setPath(QSettings::defaultFormat(), QSettings::UserScope, SOURCE_DIR);
+    QSettings::setPath(QSettings::defaultFormat(), QSettings::SystemScope, SOURCE_DIR);
     QtWebView::initialize();
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
     app.setOrganizationName("Flex3D");
     app.setOrganizationDomain("flex3d.com");
     app.setApplicationName("Flex3D");
+
 
     QQmlApplicationEngine engine;
     QObject::connect(
@@ -23,6 +25,7 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.loadFromModule("Flex3D", "Main");
+
 
     return app.exec();
 }
