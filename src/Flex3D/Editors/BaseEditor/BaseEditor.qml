@@ -1,6 +1,6 @@
 import QtQuick
 
-Item{
-    signal editingFinished()
-    property string text
+Item {
+
+    //some webeditor's need some time to load page and to be complety inited
 }

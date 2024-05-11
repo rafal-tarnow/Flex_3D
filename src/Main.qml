@@ -8,6 +8,7 @@ import Flex3D.Editors.AceSampleWebEngineEditor 1.0
 import Flex3D.Editors.AceSampleWebViewEditor 1.0
 import Flex3D.Editors.AceWebViewEditor 1.0
 import Flex3D.Editors.BaseEditor 1.0
+import Flex3D.FileIO 1.0
 
 ApplicationWindow {
     title: qsTr("Flex 3D")
@@ -27,7 +28,6 @@ ApplicationWindow {
 
     Settings {
         id: appSettings
-        property string code
         property var editorSplitView
     }
 
@@ -59,27 +59,43 @@ ApplicationWindow {
                         pathEdit.run()
                     }
                 }
+                Button {
+                    text: "Run & Save"
+                    onClicked: {
+                        pathEdit.run_and_save()
+                    }
+                }
             }
 
             AceWebViewEditor {
                 id: pathEdit
+                property string fileName: "TestComponent.qml"
+                property string fileDir: SOURCE_DIR + "/develop_project/"
+                property FileIO file: FileIO {}
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                onEditingFinished: run()
-                Component.onCompleted: {
-                    text = appSettings.code
+
+                onEditorReady: {
+                    pathEdit.setText(file.readFile(fileDir, fileName))
                     run()
                 }
+
                 function save() {
                     pathEdit.requestText(function (editorText) {
-                        appSettings.code = editorText
+                        file.saveFile(fileDir, fileName, editorText)
+                    })
+                }
+
+                function run_and_save() {
+                    pathEdit.requestText(function (editorText) {
+                        file.saveFile(fileDir, fileName, editorText)
+                        userParentItem.run(editorText)
                     })
                 }
 
                 function run() {
                     pathEdit.requestText(function (editorText) {
-                        userParentItem.create(editorText)
-                        appSettings.code = editorText
+                        userParentItem.run(editorText)
                     })
                 }
 
@@ -90,23 +106,20 @@ ApplicationWindow {
             }
         }
 
-        CadScene {
+        Item {
+            id: userParentItem
+
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Item {
-                id: userParentItem
-                width: 300
-                height: 300
-                property var userItem: null
+            property var userItem: null
 
-                function create(textComponent) {
-                    if (userItem) {
-                        userItem.destroy()
-                    }
-                    userItem = Qt.createQmlObject(textComponent,
-                                                  userParentItem, "userItem")
+            function run(textComponent) {
+                if (userItem) {
+                    userItem.destroy()
                 }
+                userItem = Qt.createQmlObject(textComponent, userParentItem,
+                                              "userItem")
             }
         }
     }

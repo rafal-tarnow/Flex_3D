@@ -7,8 +7,6 @@
 
 int main(int argc, char *argv[])
 {
-    QSettings::setPath(QSettings::defaultFormat(), QSettings::UserScope, SOURCE_DIR);
-    QSettings::setPath(QSettings::defaultFormat(), QSettings::SystemScope, SOURCE_DIR);
     QtWebView::initialize();
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
@@ -24,6 +22,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
+    engine.rootContext()->setContextProperty("SOURCE_DIR", QString(SOURCE_DIR));
     engine.loadFromModule("Flex3D", "Main");
 
 
