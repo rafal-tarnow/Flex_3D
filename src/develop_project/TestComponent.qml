@@ -2,105 +2,17 @@ import QtQuick
 import QtQuick3D
 import QtQuick3D.Helpers
 import QtQuick.Controls
+import Flex3D
 
 
-View3D {
+CadScene {
 	id: v3d
-
-	width: 500
-	height: 500
-
-
-	Column {
-		z: 2
-		anchors.right: parent.right
-		anchors.top: parent.top
-		spacing: 2
-
-		Button {
-			id: homeCamPosition
-			width: 50
-			onClicked: {
-				cameraPerspective.position = Qt.vector3d(-1200, 750, 700)
-				cameraPerspective.rotation = Qt.quaternion(0.87, -0.22,
-					-0.42, -0.1)
-			}
-		}
-
-		Slider {
-			id: cuttingAreaXSizeSlider
-			width: 200
-			from: 200
-			to: 2000
-			value: 700
-		}
-
-		Text {
-			id: dbgText1
-			text: cameraPerspective.position.toString()
-		}
-
-		Text {
-			id: dbgText2
-			text: cameraPerspective.rotation.toString()
-		}
-
-		DebugView {
-			source: v3d
-			resourceDetailsVisible: false
-		}
+	
+	Button{
+		text: "Hello Button"
 	}
 
-
-	OrbitCameraController {
-		anchors.fill: parent
-		// origin: originNode
-		// camera: cameraPerspective
-		origin: cameraPerspective
-		camera: originNode
-	}
-
-	// WasdController {
-	//     controlledObject: cameraPerspective
-	// }
 	property color aluminiumColor: Qt.rgba(0.3, 0.3, 0.3, 1.0)
-
-
-
-	environment: SceneEnvironment {
-		clearColor: "#FFFFFF"
-		backgroundMode: SceneEnvironment.Color
-		antialiasingMode: SceneEnvironment.MSAA
-		antialiasingQuality: SceneEnvironment.High
-	}
-
-	camera: cameraPerspective
-
-
-	PerspectiveCamera {
-		id: cameraPerspective
-		property real cameraAnimation: 1
-		// SequentialAnimation {
-		//     loops: Animation.Infinite
-		//     running: true
-		//     NumberAnimation {
-		//         target: camera
-		//         property: "cameraAnimation"
-		//         to: -1
-		//         duration: 5000
-		//         easing.type: Easing.InOutQuad
-		//     }
-		//     NumberAnimation {
-		//         target: camera
-		//         property: "cameraAnimation"
-		//         to: 1
-		//         duration: 5000
-		//         easing.type: Easing.InOutQuad
-		//     }
-		// }
-		position: Qt.vector3d(-1200, 750, 700)
-		rotation: Qt.quaternion(0.87, -0.22, -0.42, -0.1)
-	}
 
 	Node {
 		id: originNode
@@ -113,18 +25,6 @@ View3D {
 		}
 
 
-
-		DirectionalLight {
-			eulerRotation: Qt.vector3d(-135, -110, 0)
-			brightness: 1
-		}
-
-		SpotLight {
-			position: Qt.vector3d(0, 500, 600)
-			eulerRotation.x: -45
-			brightness: 30
-		}
-
 		BodyCube {
 			id: cuttingArea
 			position: Qt.vector3d(0, 0, 0)
@@ -135,39 +35,38 @@ View3D {
 			color: Qt.rgba(0.7, 0.6, 0.1, 1.0)
 		}
 
-		// Node {
-		// 	id: supports
-		// 	position: Qt.vector3d(0, 80, 0)
-		// 	visible: true
-		// 	BodyCube {
-		// 		id: leftSupport
-		// 		position: Qt.vector3d(
-		// 			cuttingArea.xLenght / 2 + xLenght / 2 + 10, 0, 0)
-		// 		xLenght: 80
-		// 		yLenght: 80
-		// 		zLenght: cuttingArea.zLenght
-		// 		xSymmetric: true
-		// 		color: aluminiumColor
-		// 		axisHelper.enableAxisLines: true
-		// 	}
+		Node {
+			id: supports
+			position: Qt.vector3d(0, 80, 0)
+			visible: true
+			BodyCube {
+				id: leftSupport
+				position: Qt.vector3d(
+					cuttingArea.xLenght / 2 + xLenght / 2 + 10, 0, 0)
+				xLenght: 80
+				yLenght: 80
+				zLenght: cuttingArea.zLenght
+				xSymmetric: true
+				color: aluminiumColor
+				axisHelper.enableAxisLines: true
+			}
 
-		// 	BodyCube {
-		// 		id: rightSupport
-		// 		position: Qt.vector3d(
-		// 			-(cuttingArea.xLenght / 2 + xLenght / 2 + 10), 0,
-		// 			0)
-		// 		xLenght: 80
-		// 		yLenght: 80
-		// 		zLenght: cuttingArea.zLenght
-		// 		xSymmetric: true
-		// 		color: aluminiumColor
-		// 		axisHelper.enableAxisLines: true
-		// 	}
-		// }
-	}
-
-
-
+			BodyCube {
+				id: rightSupport
+				position: Qt.vector3d(
+					-(cuttingArea.xLenght / 2 + xLenght / 2 + 10), 0,
+					0)
+				xLenght: 80
+				yLenght: 80
+				zLenght: cuttingArea.zLenght
+				xSymmetric: true
+				color: aluminiumColor
+				axisHelper.enableAxisLines: true
+			}
+		}
+		
+		
+		
 
 
 	// Node {
@@ -331,4 +230,7 @@ View3D {
 			}
 		}
 	}
+		
+	}
+
 }

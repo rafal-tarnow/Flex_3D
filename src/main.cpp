@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
     app.setOrganizationDomain("flex3d.com");
     app.setApplicationName("Flex3D");
 
-
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,
@@ -24,7 +23,6 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.rootContext()->setContextProperty("SOURCE_DIR", QString(SOURCE_DIR));
     engine.loadFromModule("Flex3D", "Main");
-
 
     return app.exec();
 }
