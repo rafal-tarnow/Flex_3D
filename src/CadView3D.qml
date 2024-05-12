@@ -4,48 +4,32 @@ import QtQuick3D.Helpers
 import QtQuick.Controls
 
 View3D {
-    //anchors.fill: parent
+    id: root
 
-    Column {
+    Item {
         z: 2
         anchors.right: parent.right
         anchors.top: parent.top
-        spacing: 2
 
         Button {
             id: homeCamPosition
-            width: 50
+            anchors.right: parent.right
+            anchors.top: parent.top
+            text: qsTr("Reset Camera")
             onClicked: {
                 cameraPerspective.position = Qt.vector3d(-1200, 750, 700)
                 cameraPerspective.rotation = Qt.quaternion(0.87, -0.22,
-                    -0.42, -0.1)
+                                                           -0.42, -0.1)
             }
         }
 
-        Slider {
-            id: cuttingAreaXSizeSlider
-            width: 200
-            from: 200
-            to: 2000
-            value: 700
-        }
-
-        Text {
-            id: dbgText1
-            text: cameraPerspective.position.toString()
-        }
-
-        Text {
-            id: dbgText2
-            text: cameraPerspective.rotation.toString()
-        }
-
         DebugView {
-            source: v3d
+            anchors.right: parent.right
+            anchors.top: homeCamPosition.bottom
+            source: root
             resourceDetailsVisible: false
         }
     }
-
 
     environment: SceneEnvironment {
         clearColor: "#FFFFFF"
@@ -55,7 +39,6 @@ View3D {
     }
 
     camera: cameraPerspective
-
 
     PerspectiveCamera {
         id: cameraPerspective
@@ -82,7 +65,6 @@ View3D {
         rotation: Qt.quaternion(0.87, -0.22, -0.42, -0.1)
     }
 
-
     // OrbitCameraController {
     //     anchors.fill: parent
     //     // origin: originNode
@@ -90,7 +72,6 @@ View3D {
     //     origin: cameraPerspective
     //     camera: originNode
     // }
-
     WasdController {
         controlledObject: cameraPerspective
     }
@@ -105,5 +86,4 @@ View3D {
         eulerRotation.x: -45
         brightness: 30
     }
-
 }

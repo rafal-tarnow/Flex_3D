@@ -9,6 +9,54 @@ Node {
 	id: v3d
 
 
+	property var gui : Item {
+		x: 10
+		y: 10
+		Column {
+			spacing: 5
+			Button {
+				text: "OK"
+			}
+			Button {
+				text: "YES"
+			}
+			Slider{
+				
+			}
+			Slider{
+				
+			}
+			Slider{
+				
+			}
+			Slider{
+				
+			}
+			Slider{
+				
+			}
+		}
+	}
+
+
+
+	// property var gui: Item {
+	// 	width: 100
+	// 	height: 100
+	// 	Button {
+	// 		text: "OK"
+	// 		onClicked: {
+	// 			text = "Clicked"
+	// 		}
+	// 	}
+	// 	Slider{
+	// 		x: 200
+	// 		y: 0
+	// 	}
+	// }
+
+
+
 
 	property color aluminiumColor: Qt.rgba(0.3, 0.3, 0.3, 1.0)
 
@@ -17,9 +65,9 @@ Node {
 
 		AxisHelper {
 			id: worldAxes
-			 enableXYGrid: true
-			 enableXZGrid: false
-			 enableYZGrid: false
+			enableXYGrid: false
+			enableXZGrid: true
+			enableYZGrid: false
 		}
 	}
 }

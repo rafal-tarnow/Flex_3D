@@ -17,7 +17,7 @@ qt_add_qml_module(${PROJECT_NAME}
     URI Flex3D
     VERSION 1.0
     QML_FILES Main.qml
-    QML_FILES CadScene.qml
+    QML_FILES CadView3D.qml
     QML_FILES BodyCube.qml
     QML_FILES Body.qml
 )

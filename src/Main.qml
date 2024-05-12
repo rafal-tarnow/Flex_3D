@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+//import QtQuick.Controls.Universal
+//import QtQuick.Controls.Material
 import QtCore
 import QtQuick3D
 import QtQuick3D.Helpers
@@ -20,6 +22,8 @@ ApplicationWindow {
     x: 0
     y: 0
 
+    //Universal.theme: Universal.Dark
+    //Material.theme: Material.Dark
     Component.onCompleted: {
         editorSplitView.restoreState(appSettings.editorSplitView)
     }
@@ -42,6 +46,7 @@ ApplicationWindow {
             SplitView.preferredWidth: 400
             Row {
                 Layout.fillHeight: false
+                spacing: 5
                 Button {
                     text: "Save"
                     onClicked: {
@@ -78,7 +83,7 @@ ApplicationWindow {
 
                 onEditorReady: {
                     pathEdit.setText(file.readFile(fileDir, fileName))
-                    run()
+                    //run()
                 }
 
                 function save() {
@@ -90,13 +95,13 @@ ApplicationWindow {
                 function run_and_save() {
                     pathEdit.requestText(function (editorText) {
                         file.saveFile(fileDir, fileName, editorText)
-                        userParentItem.run(editorText)
+                        cadView3D.run(editorText)
                     })
                 }
 
                 function run() {
                     pathEdit.requestText(function (editorText) {
-                        userParentItem.run(editorText)
+                        cadView3D.run(editorText)
                     })
                 }
 
@@ -107,34 +112,24 @@ ApplicationWindow {
             }
         }
 
-        CadScene {
-            id: userParentItem
-            // Rectangle{
-            //     anchors.fill: parent
-            //     color: "red"
-            // }
-
-
-
+        CadView3D {
+            id: cadView3D
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            // property var userItem: null
+            Node {
+                id: embedNode
+                property var userNode: null
+            }
 
-            // function run(textComponent) {
-            //     if (userItem) {
-            //         userItem.destroy()
-            //     }
-            //     userItem = Qt.createQmlObject(textComponent, userParentItem,"userItem")
-            // }
-            property var userItem: null
-
-             function run(textComponent) {
-                 // if (scene) {
-                 //     scene.destroy()
-                 // }
-                 importScene = Qt.createQmlObject(textComponent, userParentItem,"userItem")
-             }
+            function run(textComponent) {
+                if (embedNode.userNode) {
+                    embedNode.userNode.destroy()
+                }
+                embedNode.userNode = Qt.createQmlObject(textComponent,
+                                                        embedNode, "userNode")
+                embedNode.userNode.gui.parent = cadView3D
+            }
         }
     }
 }
