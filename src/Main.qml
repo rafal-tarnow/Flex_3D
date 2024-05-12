@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtCore
 import QtQuick3D
+import QtQuick3D.Helpers
 import Flex3D.Editors.SimpleEditor 1.0
 import Flex3D.Editors.AceSampleWebEngineEditor 1.0
 import Flex3D.Editors.AceSampleWebViewEditor 1.0
@@ -106,21 +107,34 @@ ApplicationWindow {
             }
         }
 
-        Item {
+        CadScene {
             id: userParentItem
+            // Rectangle{
+            //     anchors.fill: parent
+            //     color: "red"
+            // }
+
+
 
             Layout.fillHeight: true
             Layout.fillWidth: true
 
+            // property var userItem: null
+
+            // function run(textComponent) {
+            //     if (userItem) {
+            //         userItem.destroy()
+            //     }
+            //     userItem = Qt.createQmlObject(textComponent, userParentItem,"userItem")
+            // }
             property var userItem: null
 
-            function run(textComponent) {
-                if (userItem) {
-                    userItem.destroy()
-                }
-                userItem = Qt.createQmlObject(textComponent, userParentItem,
-                                              "userItem")
-            }
+             function run(textComponent) {
+                 // if (scene) {
+                 //     scene.destroy()
+                 // }
+                 importScene = Qt.createQmlObject(textComponent, userParentItem,"userItem")
+             }
         }
     }
 }

@@ -4,7 +4,7 @@ import QtQuick3D.Helpers
 import QtQuick.Controls
 
 View3D {
-    anchors.fill: parent
+    //anchors.fill: parent
 
     Column {
         z: 2
@@ -105,7 +105,5 @@ View3D {
         eulerRotation.x: -45
         brightness: 30
     }
-
-
 
 }

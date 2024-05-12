@@ -4,6 +4,7 @@
 #include <QTextOption>
 #include <QtWebView/QtWebView>
 #include <QtWebEngineQuick>
+#include <QQuickStyle>
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
     app.setOrganizationDomain("flex3d.com");
     app.setApplicationName("Flex3D");
 
+    QQuickStyle::setStyle(QLatin1String("Imagine"));
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,

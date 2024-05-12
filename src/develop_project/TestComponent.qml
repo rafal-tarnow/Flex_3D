@@ -5,12 +5,37 @@ import QtQuick.Controls
 import Flex3D
 
 
-CadScene {
+Node {
 	id: v3d
-	
-	Button{
-		text: "Hello Button"
+
+
+
+	property color aluminiumColor: Qt.rgba(0.3, 0.3, 0.3, 1.0)
+
+	Node {
+		id: originNode
+
+		AxisHelper {
+			id: worldAxes
+			 enableXYGrid: true
+			 enableXZGrid: false
+			 enableYZGrid: false
+		}
 	}
+}
+
+/*
+import QtQuick
+import QtQuick3D
+import QtQuick3D.Helpers
+import QtQuick.Controls
+import Flex3D
+
+
+Node {
+	id: v3d
+
+
 
 	property color aluminiumColor: Qt.rgba(0.3, 0.3, 0.3, 1.0)
 
@@ -64,173 +89,174 @@ CadScene {
 				axisHelper.enableAxisLines: true
 			}
 		}
-		
-		
-		
 
 
-	// Node {
-	//     id: base
-	//     property real baseWidth: cuttingArea.xLenght + 2 * 80
-	//     property bool helperAxis: false
-	//     property color color: Qt.rgba(0.4, 0.4, 0.4, 1.0)
-
-	//     BodyCube {
-	//         position: Qt.vector3d(0, -80, 0)
-	//         xLenght: parent.baseWidth
-	//         yLenght: 80
-	//         zLenght: 80
-	//         xSymmetric: true
-	//         axisHelper.enableAxisLines: base.helperAxis
-	//         color: base.color
-	//     }
-
-	//     BodyCube {
-	//         position: Qt.vector3d(0, -80, 200)
-	//         xLenght: parent.baseWidth
-	//         yLenght: 80
-	//         zLenght: 80
-	//         xSymmetric: true
-	//         axisHelper.enableAxisLines: base.helperAxis
-	//         color: base.color
-	//     }
-
-	//     BodyCube {
-	//         position: Qt.vector3d(0, -80, 400)
-	//         xLenght: parent.baseWidth
-	//         yLenght: 80
-	//         zLenght: 80
-	//         xSymmetric: true
-	//         axisHelper.enableAxisLines: base.helperAxis
-	//         color: base.color
-	//     }
-	// }
 
 
-	Model {
-		source: "#Rectangle"
-		y: -500
-		scale: Qt.vector3d(12, 12, 12)
-		eulerRotation.x: -90
-		materials: DefaultMaterial {
-			diffuseColor: Qt.rgba(0.5, 0.5, 0.5, 1.0)
-			cullMode: Material.NoCulling
-		}
-	}
-	Model {
-		source: "#Rectangle"
-		x: -600
-		scale: Qt.vector3d(12, 10, 12)
-		eulerRotation.y: 90
-		materials: DefaultMaterial {
-			diffuseColor: Qt.rgba(0.8, 0.8, 0.6, 1.0)
-			cullMode: Material.NoCulling
-		}
-	}
-	Model {
-		source: "#Rectangle"
-		z: -600
-		scale: Qt.vector3d(12, 10, 12)
-		materials: DefaultMaterial {
-			diffuseColor: Qt.rgba(0.8, 0.8, 0.6, 1.0)
-			cullMode: Material.NoCulling
-		}
-	}
 
-	Node {
-		position: Qt.vector3d(0, 100, -120)
-		// AxisHelper{
-		//     enableAxisLines: true
-		//     enableXYGrid: true
-		//     enableXZGrid: false
-		//     enableYZGrid: false
+		// Node {
+		//     id: base
+		//     property real baseWidth: cuttingArea.xLenght + 2 * 80
+		//     property bool helperAxis: false
+		//     property color color: Qt.rgba(0.4, 0.4, 0.4, 1.0)
+
+		//     BodyCube {
+		//         position: Qt.vector3d(0, -80, 0)
+		//         xLenght: parent.baseWidth
+		//         yLenght: 80
+		//         zLenght: 80
+		//         xSymmetric: true
+		//         axisHelper.enableAxisLines: base.helperAxis
+		//         color: base.color
+		//     }
+
+		//     BodyCube {
+		//         position: Qt.vector3d(0, -80, 200)
+		//         xLenght: parent.baseWidth
+		//         yLenght: 80
+		//         zLenght: 80
+		//         xSymmetric: true
+		//         axisHelper.enableAxisLines: base.helperAxis
+		//         color: base.color
+		//     }
+
+		//     BodyCube {
+		//         position: Qt.vector3d(0, -80, 400)
+		//         xLenght: parent.baseWidth
+		//         yLenght: 80
+		//         zLenght: 80
+		//         xSymmetric: true
+		//         axisHelper.enableAxisLines: base.helperAxis
+		//         color: base.color
+		//     }
 		// }
-		Item {
-			width: 400
-			height: 400
-			anchors.centerIn: parent
-			Rectangle {
-				anchors.fill: parent
-				opacity: 0.4
-				color: "#202020"
-				radius: 10
-				border.width: 2
-				border.color: "#f0f0f0"
-			}
-		}
-	}
 
-	Node {
-		position: Qt.vector3d(0, 150, 100)
-
-		NumberAnimation on eulerRotation.z {
-			loops: Animation.Infinite
-			from: 0
-			to: 360
-			duration: 4000
-			easing.type: Easing.InOutBack
-		}
-		Item {
-			width: 400
-			height: 400
-			anchors.centerIn: parent
-			// This allows rendering into offscreen surface and caching it.
-			layer.enabled: true
-			Rectangle {
-				x: 150
-				y: 100
-				width: 100
-				height: 100
-				radius: 50
-				color: "#80808020"
-				border.color: "black"
-				border.width: 2
-			}
-			Rectangle {
-				x: 90
-				y: 200
-				width: 100
-				height: 100
-				radius: 50
-				color: "#80808020"
-				border.color: "black"
-				border.width: 2
-			}
-			Rectangle {
-				x: 210
-				y: 200
-				width: 100
-				height: 100
-				radius: 50
-				color: "#80808020"
-				border.color: "black"
-				border.width: 2
-			}
-		}
-	}
-
-	//! [circles item]
-	Node {
-		position: Qt.vector3d(0, 800, 0)
 
 		Model {
-			source: "#Cylinder"
-			y: -300
-			scale: Qt.vector3d(0.1, 6.1, 0.1)
+			source: "#Rectangle"
+			y: -500
+			scale: Qt.vector3d(12, 12, 12)
+			eulerRotation.x: -90
 			materials: DefaultMaterial {
-				diffuseColor: Qt.rgba(0.9, 0.9, 0.9, 1.0)
+				diffuseColor: Qt.rgba(0.5, 0.5, 0.5, 1.0)
+				cullMode: Material.NoCulling
 			}
 		}
 		Model {
-			source: "#Sphere"
-			y: -700
-			scale: Qt.vector3d(2, 2, 2)
+			source: "#Rectangle"
+			x: -600
+			scale: Qt.vector3d(12, 10, 12)
+			eulerRotation.y: 90
 			materials: DefaultMaterial {
-				diffuseColor: Qt.rgba(0.4, 0.4, 0.4, 1.0)
+				diffuseColor: Qt.rgba(0.8, 0.8, 0.6, 1.0)
+				cullMode: Material.NoCulling
 			}
 		}
-	}
-		
+		Model {
+			source: "#Rectangle"
+			z: -600
+			scale: Qt.vector3d(12, 10, 12)
+			materials: DefaultMaterial {
+				diffuseColor: Qt.rgba(0.8, 0.8, 0.6, 1.0)
+				cullMode: Material.NoCulling
+			}
+		}
+
+		Node {
+			position: Qt.vector3d(0, 100, -120)
+			// AxisHelper{
+			//     enableAxisLines: true
+			//     enableXYGrid: true
+			//     enableXZGrid: false
+			//     enableYZGrid: false
+			// }
+			Item {
+				width: 400
+				height: 400
+				anchors.centerIn: parent
+				Rectangle {
+					anchors.fill: parent
+					opacity: 0.4
+					color: "#202020"
+					radius: 10
+					border.width: 2
+					border.color: "#f0f0f0"
+				}
+			}
+		}
+
+		Node {
+			position: Qt.vector3d(0, 150, 100)
+
+			NumberAnimation on eulerRotation.z {
+				loops: Animation.Infinite
+				from: 0
+				to: 360
+				duration: 4000
+				easing.type: Easing.InOutBack
+			}
+			Item {
+				width: 400
+				height: 400
+				anchors.centerIn: parent
+				// This allows rendering into offscreen surface and caching it.
+				layer.enabled: true
+				Rectangle {
+					x: 150
+					y: 100
+					width: 100
+					height: 100
+					radius: 50
+					color: "#80808020"
+					border.color: "black"
+					border.width: 2
+				}
+				Rectangle {
+					x: 90
+					y: 200
+					width: 100
+					height: 100
+					radius: 50
+					color: "#80808020"
+					border.color: "black"
+					border.width: 2
+				}
+				Rectangle {
+					x: 210
+					y: 200
+					width: 100
+					height: 100
+					radius: 50
+					color: "#80808020"
+					border.color: "black"
+					border.width: 2
+				}
+			}
+		}
+
+		//! [circles item]
+		Node {
+			position: Qt.vector3d(0, 800, 0)
+
+			Model {
+				source: "#Cylinder"
+				y: -300
+				scale: Qt.vector3d(0.1, 6.1, 0.1)
+				materials: DefaultMaterial {
+					diffuseColor: Qt.rgba(0.9, 0.9, 0.9, 1.0)
+				}
+			}
+			Model {
+				source: "#Sphere"
+				y: -700
+				scale: Qt.vector3d(2, 2, 2)
+				materials: DefaultMaterial {
+					diffuseColor: Qt.rgba(0.4, 0.4, 0.4, 1.0)
+				}
+			}
+		}
+
 	}
 
 }
+*/

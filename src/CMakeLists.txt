@@ -5,7 +5,7 @@ project(Flex3D-app VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Quick Quick3D WebEngineQuick WebView)
+find_package(Qt6 REQUIRED COMPONENTS Core QuickControls2 Quick3D WebEngineQuick WebView)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -36,7 +36,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
-    Qt6::Quick
+    Qt6::QuickControls2
     Qt6::Quick3D
     Qt6::WebView
     Qt6::WebEngineQuick
