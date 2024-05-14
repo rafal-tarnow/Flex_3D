@@ -12,6 +12,7 @@ import Flex3D.Editors.AceSampleWebViewEditor 1.0
 import Flex3D.Editors.AceWebViewEditor 1.0
 import Flex3D.Editors.BaseEditor 1.0
 import Flex3D.FileIO 1.0
+import Flex3D.FProcess 1.0
 
 ApplicationWindow {
     title: qsTr("Flex 3D")
@@ -59,16 +60,26 @@ ApplicationWindow {
                         pathEdit.format()
                     }
                 }
-                Button {
-                    text: "Run"
-                    onClicked: {
-                        pathEdit.run()
-                    }
-                }
+                // Button {
+                //     text: "Run"
+                //     onClicked: {
+                //         pathEdit.run()
+                //     }
+                // }
                 Button {
                     text: "Run & Save"
                     onClicked: {
                         pathEdit.run_and_save()
+                    }
+                }
+                Button {
+                    text: "balsamui.exe"
+                    onClicked: {
+                        balsamui.start()
+                    }
+                    FProcess {
+                        id: balsamui
+                        program: "C:/Qt_6_7_0/6.7.0/msvc2019_64/bin/balsamui.exe"
                     }
                 }
             }
@@ -83,7 +94,7 @@ ApplicationWindow {
 
                 onEditorReady: {
                     pathEdit.setText(file.readFile(fileDir, fileName))
-                    //run()
+                    run()
                 }
 
                 function save() {
@@ -117,18 +128,23 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Node {
-                id: embedNode
-                property var userNode: null
-            }
-
             function run(textComponent) {
-                if (embedNode.userNode) {
-                    embedNode.userNode.destroy()
+                qmlEngine.clearComponentCache(
+                            ) //without clearComponentCache() 3D objects loaded by Loader3D second time from changed files are loaded form cache instead from changed file
+                if (scene.userNode) {
+                    scene.userNode.destroy()
+                    scene.userNode = null
                 }
-                embedNode.userNode = Qt.createQmlObject(textComponent,
-                                                        embedNode, "userNode")
-                embedNode.userNode.gui.parent = cadView3D
+
+                try {
+                    let instance = Qt.createQmlObject(textComponent, scene,
+                                                      "userNode")
+
+                    scene.userNode = instance
+                    scene.userNode.gui.parent = cadView3D
+                } catch (error) {
+                    console.error("Error while creating QML object:", error)
+                }
             }
         }
     }

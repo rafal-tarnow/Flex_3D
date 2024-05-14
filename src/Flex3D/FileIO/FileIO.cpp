@@ -9,7 +9,7 @@ FileIO::FileIO(QObject *parent) :
 
 void FileIO::saveFile(const QString &fileDir, const QString &fileName, const QString &text)
 {
-    QString filePath = fileDir + fileName;
+    QString filePath = fileDir + "/" + fileName;
     QFile file;
     file.setFileName(filePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -24,7 +24,7 @@ void FileIO::saveFile(const QString &fileDir, const QString &fileName, const QSt
 
 QString FileIO::readFile(const QString &fileDir, const QString &fileName)
 {
-    QString filePath = fileDir + fileName;
+    QString filePath = fileDir + "/" + fileName;
 
     QString fileContent;
     QFile file;

@@ -1,4 +1,4 @@
-set(mod_resource_files
+set(page_files
     page/ide.html
     page/css/style.css
     page/js/ide.js
@@ -14,7 +14,7 @@ qt_add_qml_module(AceWebViewEditor
     QML_FILES
         AceWebViewEditor.qml
     # RESOURCES
-    #     ${mod_resource_files}
+    #     ${page_files}
     # RESOURCE_PREFIX "/qt/qml"
 )
 
@@ -26,7 +26,7 @@ qt_add_resources(AceWebViewEditor "page"
     BASE
         "page"
     FILES
-        ${mod_resource_files}
+        ${page_files}
     FILES
         ${ace_files}
 )

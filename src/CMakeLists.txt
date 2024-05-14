@@ -19,7 +19,10 @@ qt_add_qml_module(${PROJECT_NAME}
     QML_FILES Main.qml
     QML_FILES CadView3D.qml
     QML_FILES BodyCube.qml
-    QML_FILES Body.qml
+    QML_FILES FBody.qml
+    QML_FILES OriginGizmo.qml
+    SOURCES EngineQml.hpp
+    SOURCES EngineQml.cpp
 )
 
 
@@ -55,3 +58,4 @@ add_subdirectory(Flex3D/Editors/AceSampleWebEngineEditor/)
 add_subdirectory(Flex3D/Editors/AceSampleWebViewEditor/)
 add_subdirectory(Flex3D/Editors/BaseEditor/)
 add_subdirectory(Flex3D/FileIO/)
+add_subdirectory(Flex3D/FProcess/)

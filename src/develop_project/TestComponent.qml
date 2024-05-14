@@ -2,7 +2,9 @@ import QtQuick
 import QtQuick3D
 import QtQuick3D.Helpers
 import QtQuick.Controls
+import QtQuick3D.AssetUtils
 import Flex3D
+import "."
 
 
 Node {
@@ -20,40 +22,21 @@ Node {
 			Button {
 				text: "YES"
 			}
-			Slider{
-				
+			Slider {}
+			Slider {}
+			Slider {}
+			Slider {}
+			Text{
+				text: "Base offset: " + baseOffset.value
 			}
-			Slider{
-				
-			}
-			Slider{
-				
-			}
-			Slider{
-				
-			}
-			Slider{
-				
+			Slider {
+				id: baseOffset
+				from: 20
+				to: 1000
+				value: 200
 			}
 		}
 	}
-
-
-
-	// property var gui: Item {
-	// 	width: 100
-	// 	height: 100
-	// 	Button {
-	// 		text: "OK"
-	// 		onClicked: {
-	// 			text = "Clicked"
-	// 		}
-	// 	}
-	// 	Slider{
-	// 		x: 200
-	// 		y: 0
-	// 	}
-	// }
 
 
 
@@ -70,6 +53,275 @@ Node {
 			enableYZGrid: false
 		}
 	}
+
+	// Model {
+	// 	source: "#Sphere"
+	// 	scale: Qt.vector3d(2.0, 2.0, 2.0)
+	// 	materials: DefaultMaterial {
+	// 		diffuseColor: Qt.rgba(0.0, 1.0, 0.1, 1.0)
+	// 	}
+	// }
+
+
+	// BodyCube {
+	// 	position: Qt.vector3d(0, 0, 0)
+	// 	xLenght: 100
+	// 	yLenght: 100
+	// 	zLenght: 800
+	// 	xSymmetric: false
+	// 	color: Qt.rgba(0.7, 0.6, 0.1, 1.0)
+	// }
+
+	// RuntimeLoader {
+	// 	id: importNode
+	// 	source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/profile_8080.obj"
+	// 	//source: "file:///profile_2020.obj"
+	// }
+
+	// Body8080{
+
+	// }
+
+
+	//base
+	Node {
+		id: base
+
+
+		Loader3D {
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(200, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(400, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(600, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(800, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1000, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1200, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1400, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1600, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1800, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2000, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2200, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2400, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2600, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+	}
+
+	//base -200
+	Node {
+		id: base2
+		position: Qt.vector3d(0, -baseOffset.value, 0)
+
+
+		Loader3D {
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(200, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(400, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(600, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(800, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1000, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1200, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1400, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1600, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(1800, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2000, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2200, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2400, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+		Loader3D {
+			position: Qt.vector3d(2600, 0, 0)
+			eulerRotation.x: 90
+			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			visible: status == Loader3D.Ready
+		}
+
+	}
+
+
+
 }
 
 /*

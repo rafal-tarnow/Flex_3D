@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick3D
 import QtQuick3D.Helpers
 
-Body{
+FBody{
     id: body
     property real xLenght: 100
     property real yLenght: 100
