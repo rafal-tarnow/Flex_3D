@@ -90,7 +90,7 @@ Node {
 
 		Loader3D {
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -98,7 +98,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(200, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -106,7 +106,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(400, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -114,7 +114,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(600, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -122,7 +122,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(800, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -130,7 +130,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1000, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -138,7 +138,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1200, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -146,7 +146,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1400, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -154,7 +154,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1600, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -162,7 +162,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1800, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -170,7 +170,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2000, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -178,7 +178,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2200, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -186,7 +186,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2400, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -194,7 +194,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2600, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -209,7 +209,7 @@ Node {
 
 		Loader3D {
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -217,7 +217,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(200, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -225,7 +225,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(400, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -233,7 +233,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(600, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -241,7 +241,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(800, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -249,7 +249,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1000, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -257,7 +257,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1200, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -265,7 +265,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1400, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -273,7 +273,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1600, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -281,7 +281,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(1800, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -289,7 +289,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2000, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -297,7 +297,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2200, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -305,7 +305,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2400, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
@@ -313,7 +313,7 @@ Node {
 		Loader3D {
 			position: Qt.vector3d(2600, 0, 0)
 			eulerRotation.x: 90
-			source: "file:///C:/Users/rafal/Documents/Flex_3D/src/develop_project/balsamui/Profile_8080.qml"
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
 			asynchronous: true
 			visible: status == Loader3D.Ready
 		}
