@@ -17,14 +17,22 @@ qt_add_qml_module(${PROJECT_NAME}
     URI Flex3D
     VERSION 1.0
     QML_FILES Main.qml
-    QML_FILES CadView3D.qml
     QML_FILES BodyCube.qml
     QML_FILES FBody.qml
     QML_FILES OriginGizmo.qml
-    SOURCES EngineQml.hpp
-    SOURCES EngineQml.cpp
+    QML_FILES CadView3D.qml
+    SOURCES Backend.hpp
+    SOURCES Backend.cpp
 )
 
+qt_add_resources(${PROJECT_NAME} "testRect"
+    PREFIX
+        "/"
+    BASE
+        "."
+    FILES
+
+)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

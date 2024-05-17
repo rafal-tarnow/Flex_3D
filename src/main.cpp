@@ -6,10 +6,13 @@
 #include <QtWebEngineQuick>
 #include <QQuickStyle>
 #include <QQmlContext>
-#include "EngineQml.hpp"
+#include "Backend.hpp"
 
 int main(int argc, char *argv[])
 {
+
+    qDebug() << "START SOURCE_DIR = " << QString(SOURCE_DIR);
+
     QtWebView::initialize();
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
@@ -20,16 +23,15 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle(QLatin1String("Imagine"));
 
     QQmlApplicationEngine engine;
-    EngineQml engineController(&engine);
+    Backend backend(&engine);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    qmlRegisterType<EngineQml>("Flex3D", 1, 0, "EngineQml");
-    engine.rootContext()->setContextProperty("qmlEngine", &engineController);
     engine.rootContext()->setContextProperty("SOURCE_DIR", QString(SOURCE_DIR));
+    engine.rootContext()->setContextProperty("backend", &backend);
     engine.loadFromModule("Flex3D", "Main");
 
     return app.exec();

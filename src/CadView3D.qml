@@ -14,35 +14,60 @@ View3D {
     property var homeCameraPosition: Qt.vector3d(1193, 1005, 1000)
     property var homeCameraRotation: Qt.quaternion(0.879, -0.266, 0.377, 0.1145)
 
+    property alias partSource: loaderNode.source
+
+    environment: SceneEnvironment {
+        clearColor: "#FFFFFF"
+        backgroundMode: SceneEnvironment.Color
+        antialiasingMode: SceneEnvironment.MSAA
+        antialiasingQuality: SceneEnvironment.High
+    }
+
+    camera: cameraPerspective
+
+
+    property var bck: backend
+
     importScene: Node {
-        id: embedNode
-        property var userNode: null
+        Loader3D {
+            id: loaderNode
 
-        PerspectiveCamera {
-            id: cameraPerspective
-            z: 600
+            onLoaded: {
+                //we use try catch because not all loaded scenes have gui property
+                try {
+                    item.gui.parent = root
+                } catch (error) {
+                    console.log(error)
+                }
+            }
 
-            // property real cameraAnimation: 1
-            // SequentialAnimation {
-            //     loops: Animation.Infinite
-            //     running: true
-            //     NumberAnimation {
-            //         target: camera
-            //         property: "cameraAnimation"
-            //         to: -1
-            //         duration: 5000
-            //         easing.type: Easing.InOutQuad
-            //     }
-            //     NumberAnimation {
-            //         target: camera
-            //         property: "cameraAnimation"
-            //         to: 1
-            //         duration: 5000
-            //         easing.type: Easing.InOutQuad
-            //     }
-            // }
-            // position: homeCameraPosition
-            // rotation: homeCameraRotation
+            //property var userNode: null
+            PerspectiveCamera {
+                id: cameraPerspective
+                z: 600
+
+                // property real cameraAnimation: 1
+                // SequentialAnimation {
+                //     loops: Animation.Infinite
+                //     running: true
+                //     NumberAnimation {
+                //         target: camera
+                //         property: "cameraAnimation"
+                //         to: -1
+                //         duration: 5000
+                //         easing.type: Easing.InOutQuad
+                //     }
+                //     NumberAnimation {
+                //         target: camera
+                //         property: "cameraAnimation"
+                //         to: 1
+                //         duration: 5000
+                //         easing.type: Easing.InOutQuad
+                //     }
+                // }
+                // position: homeCameraPosition
+                // rotation: homeCameraRotation
+            }
         }
     }
 
@@ -55,14 +80,14 @@ View3D {
             id: camPositionTxt
             anchors.right: parent.right
             anchors.top: parent.top
-            text: qsTr("Camera position: " + embedNode.position.toString())
+            text: qsTr("Camera position: " + root.camera.position.toString())
         }
 
         Text {
             id: camRotationTxt
             anchors.right: parent.right
             anchors.top: camPositionTxt.bottom
-            text: qsTr("Camera rotation: " + embedNode.rotation.toString())
+            text: qsTr("Camera rotation: " + root.camera.rotation.toString())
         }
 
         Button {
@@ -99,18 +124,9 @@ View3D {
         resourceDetailsVisible: false
     }
 
-    environment: SceneEnvironment {
-        clearColor: "#FFFFFF"
-        backgroundMode: SceneEnvironment.Color
-        antialiasingMode: SceneEnvironment.MSAA
-        antialiasingQuality: SceneEnvironment.High
-    }
-
-    camera: cameraPerspective
-
     OrbitCameraController {
         //anchors.fill: parent
-        origin: embedNode
+        origin: loaderNode
         camera: cameraPerspective
     }
     // WasdController {
