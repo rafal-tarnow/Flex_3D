@@ -33,12 +33,12 @@ Node {
                 to: 1000
                 value: 200
             }
-			Button{
-				text: "Test backend"
-				onClicked: {
-					backend.testBackendCall()
-				}
-			}
+            Button {
+                text: "Test backend"
+                onClicked: {
+                    backend.testBackendCall()
+                }
+            }
         }
     }
 
@@ -55,13 +55,13 @@ Node {
         }
     }
 
-    // Model {
-    // 	source: "#Sphere"
-    // 	scale: Qt.vector3d(2.0, 2.0, 2.0)
-    // 	materials: DefaultMaterial {
-    // 		diffuseColor: Qt.rgba(0.0, 1.0, 0.1, 1.0)
-    // 	}
-    // }
+    Model {
+        source: "#Sphere"
+        scale: Qt.vector3d(2.0, 2.0, 2.0)
+        materials: DefaultMaterial {
+            diffuseColor: Qt.rgba(0.0, 1.0, 0.1, 1.0)
+        }
+    }
 
     // BodyCube {
     // 	position: Qt.vector3d(0, 0, 0)
@@ -552,3 +552,4 @@ Node {
 
 }
 */
+

@@ -33,6 +33,8 @@ ApplicationWindow {
         appSettings.editorSplitView = editorSplitView.saveState()
     }
 
+    property FileIO file: FileIO {}
+
     Settings {
         id: appSettings
         property var editorSplitView
@@ -68,14 +70,16 @@ ApplicationWindow {
 
         ListView {
             id: partsListView
-            property string doubleClickedFile
+            property url doubleClickedQmlFile
             spacing: 10
             topMargin: spacing
             anchors.fill: parent
             model: folderModel
 
-            onDoubleClickedFileChanged: console.log(
-                                            "doubleClickedFile = " + doubleClickedFile)
+            onDoubleClickedQmlFileChanged: {
+                console.log("doubleClickedQmlFile = " + doubleClickedQmlFile)
+                pathEdit.setText(file.readFile(doubleClickedQmlFile))
+            }
 
             FolderListModel {
                 id: folderModel
@@ -108,13 +112,17 @@ ApplicationWindow {
                 MouseArea {
                     anchors.fill: parent
                     onDoubleClicked: {
-                        partsListView.doubleClickedFile = folderModel.folder + delegate.fileName
                         console.log("Double clicked item delegate !! youpi !!")
                         console.log("fileName = " + delegate.fileName)
                         console.log("filePath = " + delegate.filePath)
                         console.log("fileBaseName = " + delegate.fileBaseName)
                         console.log("fileSuffix = " + delegate.fileSuffix)
                         console.log("fileIsDir = " + delegate.fileIsDir)
+                        if (delegate.fileIsDir === false
+                                && delegate.fileSuffix === "qml") {
+                            partsListView.doubleClickedQmlFile
+                                    = folderModel.folder + delegate.fileName
+                        }
                     }
                 }
             }
@@ -140,9 +148,12 @@ ApplicationWindow {
                 RoundButton {
                     text: "\u2630" // Unicode Character 'TRIGRAM FOR HEAVEN', no qsTr()
                     onClicked: dataPanel.toggleHide()
+                    height: saveButton.height
+                    width: height
                 }
 
                 Button {
+                    id: saveButton
                     text: "Save"
                     onClicked: {
                         pathEdit.save()
@@ -195,15 +206,11 @@ ApplicationWindow {
 
             AceWebViewEditor {
                 id: pathEdit
-                property string fileName: "TestComponent.qml"
-                property string fileDir: SOURCE_DIR + "/develop_project/"
-                property FileIO file: FileIO {}
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
                 onEditorReady: {
-                    pathEdit.setText(file.readFile(fileDir, fileName))
-                    run()
+
                 }
 
                 function save() {
@@ -234,6 +241,7 @@ ApplicationWindow {
 
         CadView3D {
             id: cadView3D
+            partSource: partsListView.doubleClickedQmlFile
             Layout.fillHeight: true
             Layout.fillWidth: true
         }

@@ -25,10 +25,10 @@ View3D {
 
     camera: cameraPerspective
 
-
     property var bck: backend
 
     importScene: Node {
+
         Loader3D {
             id: loaderNode
 
@@ -45,26 +45,6 @@ View3D {
             PerspectiveCamera {
                 id: cameraPerspective
                 z: 600
-
-                // property real cameraAnimation: 1
-                // SequentialAnimation {
-                //     loops: Animation.Infinite
-                //     running: true
-                //     NumberAnimation {
-                //         target: camera
-                //         property: "cameraAnimation"
-                //         to: -1
-                //         duration: 5000
-                //         easing.type: Easing.InOutQuad
-                //     }
-                //     NumberAnimation {
-                //         target: camera
-                //         property: "cameraAnimation"
-                //         to: 1
-                //         duration: 5000
-                //         easing.type: Easing.InOutQuad
-                //     }
-                // }
                 // position: homeCameraPosition
                 // rotation: homeCameraRotation
             }

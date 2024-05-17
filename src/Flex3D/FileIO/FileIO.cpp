@@ -25,7 +25,11 @@ void FileIO::saveFile(const QString &fileDir, const QString &fileName, const QSt
 QString FileIO::readFile(const QString &fileDir, const QString &fileName)
 {
     QString filePath = fileDir + "/" + fileName;
+    return readFile(filePath);
+}
 
+QString FileIO::readFile(const QString &filePath)
+{
     QString fileContent;
     QFile file;
     file.setFileName(filePath);
@@ -39,3 +43,10 @@ QString FileIO::readFile(const QString &fileDir, const QString &fileName)
     }
     return fileContent;
 }
+
+QString FileIO::readFile(const QUrl &fileUrl)
+{
+    QString filePath = fileUrl.toLocalFile();
+    return readFile(filePath);
+}
+
