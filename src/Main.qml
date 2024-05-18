@@ -77,7 +77,7 @@ ApplicationWindow {
                 showDirs: true
                 showFiles: true
                 showHidden: true
-                folder: "file:///" + SOURCE_DIR + /develop_project/
+                folder: "file:" + SOURCE_DIR + /develop_project/
             }
 
             delegate: ItemDelegate {
@@ -233,7 +233,7 @@ ApplicationWindow {
 
             Connections {
                 target: backend
-                onCurrentEditorFileUrlChanged: {
+                function onCurrentEditorFileUrlChanged() {
                     editor.setText(backend.currentEditorFileText)
                     cadView3D.partSource = backend.currentEditorFileUrl
                 }
