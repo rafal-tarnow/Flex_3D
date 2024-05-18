@@ -12,7 +12,6 @@ import Flex3D.Editors.AceSampleWebEngineEditor 1.0
 import Flex3D.Editors.AceSampleWebViewEditor 1.0
 import Flex3D.Editors.AceWebViewEditor 1.0
 import Flex3D.Editors.BaseEditor 1.0
-import Flex3D.FileIO 1.0
 import Flex3D.FProcess 1.0
 
 ApplicationWindow {
@@ -32,8 +31,6 @@ ApplicationWindow {
     Component.onDestruction: {
         appSettings.editorSplitView = editorSplitView.saveState()
     }
-
-    property FileIO file: FileIO {}
 
     Settings {
         id: appSettings
@@ -70,16 +67,10 @@ ApplicationWindow {
 
         ListView {
             id: partsListView
-            property url doubleClickedQmlFile
             spacing: 10
             topMargin: spacing
             anchors.fill: parent
             model: folderModel
-
-            onDoubleClickedQmlFileChanged: {
-                console.log("doubleClickedQmlFile = " + doubleClickedQmlFile)
-                pathEdit.setText(file.readFile(doubleClickedQmlFile))
-            }
 
             FolderListModel {
                 id: folderModel
@@ -120,8 +111,7 @@ ApplicationWindow {
                         console.log("fileIsDir = " + delegate.fileIsDir)
                         if (delegate.fileIsDir === false
                                 && delegate.fileSuffix === "qml") {
-                            partsListView.doubleClickedQmlFile
-                                    = folderModel.folder + delegate.fileName
+                            backend.currentEditorFileUrl = folderModel.folder + delegate.fileName
                         }
                     }
                 }
@@ -156,25 +146,19 @@ ApplicationWindow {
                     id: saveButton
                     text: "Save"
                     onClicked: {
-                        pathEdit.save()
+                        editor.save()
                     }
                 }
                 Button {
                     text: "Format"
                     onClicked: {
-                        pathEdit.format()
+                        editor.format()
                     }
                 }
-                // Button {
-                //     text: "Run"
-                //     onClicked: {
-                //         pathEdit.run()
-                //     }
-                // }
                 Button {
                     text: "Run & Save"
                     onClicked: {
-                        pathEdit.run_and_save()
+                        editor.run_and_save()
                     }
                 }
                 Button {
@@ -205,7 +189,7 @@ ApplicationWindow {
             }
 
             AceWebViewEditor {
-                id: pathEdit
+                id: editor
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
@@ -214,34 +198,47 @@ ApplicationWindow {
                 }
 
                 function save() {
-                    pathEdit.requestText(function (editorText) {
-                        file.saveFile(fileDir, fileName, editorText)
+                    editor.requestText(function (editorText) {
+                        backend.currentEditorFileText = editorText
+                        backend.saveCurrentEditorFile()
                     })
                 }
 
                 function run_and_save() {
-                    pathEdit.requestText(function (editorText) {
-                        file.saveFile(fileDir, fileName, editorText)
-                        cadView3D.run(editorText)
-                    })
-                }
-
-                function run() {
-                    pathEdit.requestText(function (editorText) {
-                        cadView3D.run(editorText)
+                    editor.requestText(function (editorText) {
+                        backend.currentEditorFileText = editorText
+                        backend.saveCurrentEditorFile()
+                        cadView3D.run()
                     })
                 }
 
                 Shortcut {
                     sequence: "Ctrl+S"
-                    onActivated: pathEdit.run()
+                    onActivated: editor.run()
                 }
             }
         }
 
         CadView3D {
             id: cadView3D
-            partSource: partsListView.doubleClickedQmlFile
+
+            function run() {
+                partSource = ""
+                partSource = backend.currentEditorFileUrl
+            }
+
+            onPartSourceChanged: {
+                backend.clearEngineComponentCache()
+            }
+
+            Connections {
+                target: backend
+                onCurrentEditorFileUrlChanged: {
+                    editor.setText(backend.currentEditorFileText)
+                    cadView3D.partSource = backend.currentEditorFileUrl
+                }
+            }
+
             Layout.fillHeight: true
             Layout.fillWidth: true
         }

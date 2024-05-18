@@ -23,6 +23,8 @@ qt_add_qml_module(${PROJECT_NAME}
     QML_FILES CadView3D.qml
     SOURCES Backend.hpp
     SOURCES Backend.cpp
+    SOURCES FileIO.hpp
+    SOURCES FileIO.cpp
 )
 
 qt_add_resources(${PROJECT_NAME} "testRect"
@@ -65,5 +67,4 @@ add_subdirectory(Flex3D/Editors/AceWebViewEditor/)
 add_subdirectory(Flex3D/Editors/AceSampleWebEngineEditor/)
 add_subdirectory(Flex3D/Editors/AceSampleWebViewEditor/)
 add_subdirectory(Flex3D/Editors/BaseEditor/)
-add_subdirectory(Flex3D/FileIO/)
 add_subdirectory(Flex3D/FProcess/)
