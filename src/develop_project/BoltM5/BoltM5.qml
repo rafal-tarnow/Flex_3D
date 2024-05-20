@@ -1,29 +1,9 @@
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
 import QtCore
 import QtQuick3D
 import QtQuick3D.Helpers
 
 Node {
-
-    property var gui: Item {
-        x: 10
-        y: 10
-        Column {
-            spacing: 5
-            Button {
-                text: "OK"
-            }
-            Button {
-                text: "YES"
-            }
-            Slider {}
-            Slider {}
-            Slider {}
-            Slider {}
-        }
-    }
 
     AxisHelper {
         id: worldAxes

@@ -25,6 +25,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES Backend.cpp
     SOURCES FileIO.hpp
     SOURCES FileIO.cpp
+    QML_FILES DataPanel.qml
+    QML_FILES NewComponentDialog.qml
 )
 
 qt_add_resources(${PROJECT_NAME} "testRect"
@@ -33,6 +35,7 @@ qt_add_resources(${PROJECT_NAME} "testRect"
     BASE
         "."
     FILES
+        resources/ComponentTemplate.qml
 
 )
 
@@ -68,3 +71,4 @@ add_subdirectory(Flex3D/Editors/AceSampleWebEngineEditor/)
 add_subdirectory(Flex3D/Editors/AceSampleWebViewEditor/)
 add_subdirectory(Flex3D/Editors/BaseEditor/)
 add_subdirectory(Flex3D/FProcess/)
+add_subdirectory(Flex3D/Cad/)

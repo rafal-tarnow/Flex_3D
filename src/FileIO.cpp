@@ -8,6 +8,25 @@ FileIO::FileIO(QObject *parent) :
 
 }
 
+bool FileIO::copyFile(const QString &fromFilePath, const QString &toFilePath, QString &errorString)
+{
+    QFile sourceFile(fromFilePath);
+    if (!sourceFile.exists()) {
+        errorString = "Source file does not exist.";
+        qDebug() << "Error:" << errorString;
+        return false;
+    }
+
+    if (!sourceFile.copy(toFilePath)) {
+        errorString = sourceFile.errorString();
+        qDebug() << "Failed to copy file from" << fromFilePath << "to" << toFilePath << "Error:" << errorString;
+        return false;
+    }
+
+    qDebug() << "Successfully copied file from" << fromFilePath << "to" << toFilePath;
+    return true;
+}
+
 bool FileIO::saveFile(const QUrl &fileUrl, const QString &text, QString &errorString)
 {
     QString filePath = fileUrl.toLocalFile();

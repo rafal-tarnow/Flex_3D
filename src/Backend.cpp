@@ -3,11 +3,13 @@
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QFile>
+#include <QDir>
 
 
 Backend::Backend(QQmlEngine *parent) :
     QObject(parent),
-    engine(parent)
+    engine(parent),
+    mWorkspaceLocation("file:" + QString(SOURCE_DIR) +  "/develop_project/")
 {
 
 }
@@ -15,6 +17,11 @@ Backend::Backend(QQmlEngine *parent) :
 Backend::~Backend()
 {
 
+}
+
+QUrl Backend::workspaceLocation()
+{
+    return mWorkspaceLocation;
 }
 
 QUrl Backend::currentEditorFileUrl()
@@ -82,4 +89,28 @@ void Backend::clearEngineComponentCache()
         qDebug() << "engine->clearComponentCache()";
         engine->clearComponentCache();
     }
+}
+
+void Backend::createNewComponent(const QString &componentName)
+{
+    qDebug() << __FUNCTION__;
+
+
+    QString componentFolderPath = mWorkspaceLocation.toLocalFile() + "/" + componentName;
+
+    QDir componentFolder(componentFolderPath);
+    if (componentFolder.exists()) {
+        qDebug() << "ERROR: folder already exists: " << componentFolderPath;
+        return;
+    }
+
+    if (!componentFolder.mkpath(".")) {
+        qDebug() << "ERROR: Failed to create folder: " << componentFolderPath;
+        return;
+    }
+
+    QString componentFilePath = mWorkspaceLocation.toLocalFile() + "/" + componentName + "/" + componentName + ".qml";
+    QString copyError;
+
+    fileIO.copyFile(":/resources/ComponentTemplate.qml", componentFilePath, copyError);
 }

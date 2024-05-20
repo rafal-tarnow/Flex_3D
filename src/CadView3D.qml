@@ -23,30 +23,22 @@ View3D {
         antialiasingQuality: SceneEnvironment.High
     }
 
-    camera: cameraPerspective
+    camera: PerspectiveCamera {
+        id: cameraPerspective
+        z: 600
+        // position: homeCameraPosition
+        // rotation: homeCameraRotation
+    }
 
-    property var bck: backend
+    importScene: Loader3D {
+        id: loaderNode
 
-    importScene: Node {
-
-        Loader3D {
-            id: loaderNode
-
-            onLoaded: {
-                //we use try catch because not all loaded scenes have gui property
-                try {
-                    item.gui.parent = root
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-
-            //property var userNode: null
-            PerspectiveCamera {
-                id: cameraPerspective
-                z: 600
-                // position: homeCameraPosition
-                // rotation: homeCameraRotation
+        onLoaded: {
+            //we use try catch because not all loaded scenes have gui property
+            try {
+                item.gui.parent = root
+            } catch (error) {
+                console.log(error)
             }
         }
     }
@@ -104,14 +96,14 @@ View3D {
         resourceDetailsVisible: false
     }
 
-    OrbitCameraController {
-        //anchors.fill: parent
-        origin: loaderNode
-        camera: cameraPerspective
-    }
-    // WasdController {
-    //     controlledObject: cameraPerspective
+    // OrbitCameraController {
+    //     //anchors.fill: parent
+    //     origin: loaderNode
+    //     camera: cameraPerspective
     // }
+    WasdController {
+        controlledObject: cameraPerspective
+    }
     DirectionalLight {
         eulerRotation: Qt.vector3d(-135, -110, 0)
         brightness: 1
