@@ -20,7 +20,6 @@ set(PROJECT_SERVER_SOURCES
     server/main_server.cpp
     server/TriangleWidget.h
     server/TriangleWidget.cpp
-    widget.ui
 )
 
 
@@ -30,12 +29,9 @@ qt_add_executable(SharedMemoryServer
 )
 
 set(PROJECT_CLIENT_SOURCES
-    main_client.cpp
+    client/main_client.cpp
     client/ClientWidget.hpp
     client/ClientWidget.cpp
-    widget.cpp
-    widget.h
-    widget.ui
 )
 
 qt_add_executable(SharedMemoryClient
