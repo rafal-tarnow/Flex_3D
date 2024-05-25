@@ -35,6 +35,9 @@ signals:
     void currentEditorFileTextChanged();
 
 private:
+    QString convertFirstLetterToLowerCase(const QString &input);
+
+private:
     QQmlEngine *engine = nullptr;
     QUrl mCurrentEditorFileUrl;
     QUrl mWorkspaceLocation;

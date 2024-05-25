@@ -7,6 +7,8 @@ add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(Qt6 REQUIRED COMPONENTS Core QuickControls2 Quick3D WebEngineQuick WebView)
 
+
+
 qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(${PROJECT_NAME}
@@ -27,6 +29,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES FileIO.cpp
     QML_FILES DataPanel.qml
     QML_FILES NewComponentDialog.qml
+    SOURCES ScadNode.hpp
+    SOURCES ScadNode.cpp
 )
 
 qt_add_resources(${PROJECT_NAME} "testRect"
@@ -36,6 +40,7 @@ qt_add_resources(${PROJECT_NAME} "testRect"
         "."
     FILES
         resources/ComponentTemplate.qml
+        resources/ComponentTemplate.scad
 
 )
 
@@ -56,6 +61,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Quick3D
     Qt6::WebView
     Qt6::WebEngineQuick
+    Qt6::Quick3DPrivate
+    #Qt${QT_VERSION_MAJOR}::WidgetsPrivate
 )
 
 include(GNUInstallDirs)

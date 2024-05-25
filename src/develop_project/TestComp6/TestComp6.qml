@@ -5,5 +5,5 @@ import QtQuick3D.Helpers
 import Flex3D.Cad
 
 BodySCAD {
-    source: "%1.scad"
+    source: "%1"
 }

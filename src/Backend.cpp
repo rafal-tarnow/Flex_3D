@@ -96,6 +96,8 @@ void Backend::createNewComponent(const QString &componentName)
     qDebug() << __FUNCTION__;
 
 
+    //CREATE NEW COMPONENT DIR
+
     QString componentFolderPath = mWorkspaceLocation.toLocalFile() + "/" + componentName;
 
     QDir componentFolder(componentFolderPath);
@@ -109,8 +111,51 @@ void Backend::createNewComponent(const QString &componentName)
         return;
     }
 
-    QString componentFilePath = mWorkspaceLocation.toLocalFile() + "/" + componentName + "/" + componentName + ".qml";
-    QString copyError;
+    //COPY NEW COMPONENT TEMPLATE
 
-    fileIO.copyFile(":/resources/ComponentTemplate.qml", componentFilePath, copyError);
+    QString componentFilePath = mWorkspaceLocation.toLocalFile() + "/" + componentName + "/" + componentName + ".qml";
+
+    QString componentTemplateFilePath = ":/resources/ComponentTemplate.qml";
+    QString componentTemplateTxt;
+    QString errorString;
+
+    if(!fileIO.readFile(componentTemplateFilePath, componentTemplateTxt, errorString)){
+        qDebug() << "[ERROR] Can't read template File: " << errorString;
+    }
+
+    //PREPARE OpenSCAD SCRIPTS NAMES AND PATH
+
+    QString openScadFileNameBase = convertFirstLetterToLowerCase(componentName);
+    QString openScadFilePath = mWorkspaceLocation.toLocalFile() + "/" + componentName + "/" + openScadFileNameBase + ".scad";
+
+
+    //FORMAT QML FILE TEXT (change in text line: 'source "%1.scad"' to 'source "componentName.scad"'
+
+    QString componentFileText = componentTemplateTxt.arg(openScadFileNameBase);
+
+    //SAVE QML FILE
+
+    if(!fileIO.saveFile(componentFilePath,componentFileText, errorString)){
+        qDebug() << "[ERROR] Can't save qml file: " << errorString;
+    }
+
+    //SAVE OpenSCAD FILE
+
+    if(!fileIO.copyFile(":/resources/ComponentTemplate.scad", openScadFilePath, errorString)){
+        qDebug() << "[ERROR] Failed to copy file: " << errorString;
+    }
+}
+
+QString Backend::convertFirstLetterToLowerCase(const QString &input) {
+    QString output = input;
+    if (output.isEmpty()) {
+        return output;
+    }
+
+    QChar firstChar = output[0];
+
+    if (firstChar.isUpper()) {
+        output[0] = firstChar.toLower();
+    }
+    return output;
 }

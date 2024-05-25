@@ -5,6 +5,7 @@ import QtQuick.Controls
 import QtQuick3D.AssetUtils
 import Flex3D
 import "."
+import "./balsamui"
 
 Node {
 	id: v3d
@@ -42,8 +43,8 @@ Node {
 				to: 1000
 				value: 80
 			}
-			
-			
+
+
 			Button {
 				text: "Test backend"
 				onClicked: {
@@ -66,20 +67,48 @@ Node {
 		}
 	}
 
-	Model {
-		source: "#Sphere"
-		scale: Qt.vector3d(2.0, 2.0, 2.0)
-		materials: DefaultMaterial {
-			diffuseColor: Qt.rgba(0.0, 1.0, 0.1, 1.0)
+
+	ScadNode {
+		Model {
+			source: "#Sphere"
+			scale: Qt.vector3d(2.0, 2.0, 2.0)
+			materials: DefaultMaterial {
+				diffuseColor: Qt.rgba(0.0, 1.0, 0.1, 1.0)
+			}
 		}
 	}
 
+
+	Body8080 {}
+
+	// Repeater3D {
+	// 	model: 1000
+	// 	delegate: Body8080 {
+	// 		position: Qt.vector3d(spacingSlider.value * index, 0, 0)
+	// 	}
+	// }
+
+	// 	Repeater3D {
+	// 	model: 5000
+	// 	delegate: Profile_8080 {
+	// 		position: Qt.vector3d(spacingSlider.value * index, 0, 0)
+	// 	}
+	// }
+
+
 	Repeater3D {
-		model: 20
-		delegate: Body8080 {
+		model: 1000
+		delegate: Loader3D {
+			eulerRotation.x: 45
 			position: Qt.vector3d(spacingSlider.value * index, 0, 0)
+			source: "file:///" + SOURCE_DIR + "/develop_project/balsamui/Profile_8080.qml"
+			asynchronous: true
+			//visible: status == Loader3D.Ready
 		}
 	}
+
+
+
 
 	// Body8080 {}
 
