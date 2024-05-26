@@ -154,6 +154,7 @@ void TriangleWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
 
     offscreenContext->makeCurrent(offscreenSurface);
+    glViewport(0, 0, w, h);
     delete offscreen_fbo;
     //framebuffer object
     QOpenGLFramebufferObjectFormat fboFormat;
@@ -244,6 +245,7 @@ void TriangleWidget::updateSharedMemory()
 
     char *to = static_cast<char*>(sharedMemory.data());
     const uchar *from = image.bits();
+    qDebug() << "image.sizeInBytes() = " << image.sizeInBytes();
     memcpy(to, from, qMin(sharedMemory.size(), static_cast<int>(image.sizeInBytes())));
 
     sharedMemory.unlock();
@@ -263,15 +265,12 @@ void TriangleWidget::updateSharedMemory()
 
 //         QSize textureSize = offscreen_fbo->size();
 
-//         // Rozmiary tekstury
 //         int textureWidth = textureSize.width();
 //         int textureHeight = textureSize.height();
 
-//         // Odczytaj dane tekstury bezpośrednio do pamięci współdzielonej
 //         glBindTexture(GL_TEXTURE_2D, textureId);
 //         glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, sharedMemory.data());
 
-//         // Zwolnij pamięć współdzieloną
 //         sharedMemory.unlock();
 //     } else {
 //         qDebug() << "Failed to get texture from framebuffer object.";
@@ -280,29 +279,16 @@ void TriangleWidget::updateSharedMemory()
 
 // void TriangleWidget::updateSharedMemory()
 // {
-//     // Upewnij się, że framebuffer jest bindowany
 //     offscreen_fbo->bind();
-
-//     // Rozmiary okna
 //     int w = offscreen_fbo->width();
 //     int h = offscreen_fbo->height();
-
-//     // Upewnij się, że pamięć współdzielona jest zablokowana przed zapisem
 //     if (!sharedMemory.lock()) {
 //         qDebug() << "Unable to lock shared memory.";
 //         return;
 //     }
-
-//     // Pobierz wskaźnik do danych pamięci współdzielonej
 //     char *to = static_cast<char*>(sharedMemory.data());
-
-//     // Odczytaj piksele z FBO do pamięci współdzielonej
 //     glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, to);
-
-//     // Zwolnij pamięć współdzieloną
 //     sharedMemory.unlock();
-
-//     // Odwiąż framebuffer
 //     offscreen_fbo->release();
 // }
 
