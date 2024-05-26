@@ -4,15 +4,18 @@
 #include <QImage>
 #include <QApplication>
 #include <QOpenGLFramebufferObjectFormat>
+#include <QOpenGLTexture>
+#include "../config.hpp"
 
 TriangleWidget::TriangleWidget(bool offscreen, QWidget *parent)
-    : QOpenGLWidget(parent), angle(0.0f), onscreen_program(nullptr),offscreen_program(nullptr), sharedMemory("TriangleSharedMemory"),
+    : QOpenGLWidget(parent), onscreen_angle(0.0f), offscreen_angle(0.0f), onscreen_program(nullptr),offscreen_program(nullptr), sharedMemory("TriangleSharedMemory"),
     offscreen(offscreen), offscreen_fbo(nullptr)
 {
-    if (!sharedMemory.create(1700 * 900 * 4)) {
+    if (!sharedMemory.create(WIDTH * HEIGHT * 4)) {
         qDebug() << "Unable to create shared memory segment.";
+        QApplication::quit();
     }
-    resize(1700,900);
+    resize(WIDTH,HEIGHT);
 
 
     timer = new QTimer(this);
@@ -95,14 +98,27 @@ void TriangleWidget::initializeOffscreen()
 
     // Bufor wierzchołków
     GLfloat vertices[] = {
-        0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f
+        // Pozycje            // Kolory
+        -1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+        1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f
+    };
+
+    GLuint indices[] = {
+        0, 1, 2,
+        2, 3, 0
     };
 
     offscreen_vbo.create();
     offscreen_vbo.bind();
     offscreen_vbo.allocate(vertices, sizeof(vertices));
+
+    // Element Buffer Object (EBO) dla kwadratu
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Atrybuty wierzchołków
     offscreen_program->enableAttributeArray(0);
@@ -149,19 +165,25 @@ void TriangleWidget::paintGL()
 {
     qDebug() << __FUNCTION__;
     renderTriangleOnscreen();
-
 }
 
 void TriangleWidget::updateRotation()
 {
     qDebug() << __FUNCTION__;
-    angle += 1.0f;
-    if (angle >= 360.0f) {
-        angle = 0.0f;
+    onscreen_angle += 1.0f;
+    if (onscreen_angle >= 360.0f) {
+        onscreen_angle = 0.0f;
     }
+
+    offscreen_angle += 1.0f;
+    if (offscreen_angle >= 360.0f) {
+        offscreen_angle = 0.0f;
+    }
+
     update();
     qDebug() << "post event";
-    //renderTriangleOffscreen();
+    renderTriangleOffscreen();
+    updateSharedMemory();
 }
 
 void TriangleWidget::renderTriangleOnscreen()
@@ -170,16 +192,12 @@ void TriangleWidget::renderTriangleOnscreen()
     qDebug() << __FUNCTION__ << " " << i++;
 
     makeCurrent();
-    if (offscreen) {
-        offscreen_fbo->bind();
-    }
-
 
     glClear(GL_COLOR_BUFFER_BIT);
 
     QMatrix4x4 model;
     model.translate(0.0f, 0.0f, -5.0f);
-    model.rotate(angle, 0.0f, 1.0f, 0.0f);
+    model.rotate(onscreen_angle, 0.0f, 1.0f, 0.0f);
 
     QMatrix4x4 projection;
     projection.perspective(45.0f, float(width()) / float(height()), 0.1f, 100.0f);
@@ -189,23 +207,19 @@ void TriangleWidget::renderTriangleOnscreen()
     onscreen_program->setUniformValue("projection", projection);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
-
-
 }
 
 void TriangleWidget::renderTriangleOffscreen()
 {
+    qDebug() << __FUNCTION__;
     offscreenContext->makeCurrent(offscreenSurface);
-
     offscreen_fbo->bind();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
     QMatrix4x4 model;
     model.translate(0.0f, 0.0f, -5.0f);
-    model.rotate(angle, 0.0f, 1.0f, 0.0f);
+    model.rotate(offscreen_angle, 0.0f, 1.0f, 0.0f);
 
     QMatrix4x4 projection;
     projection.perspective(45.0f, float(width()) / float(height()), 0.1f, 100.0f);
@@ -214,12 +228,9 @@ void TriangleWidget::renderTriangleOffscreen()
     offscreen_program->setUniformValue("model", model);
     offscreen_program->setUniformValue("projection", projection);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    // updateSharedMemory();
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     offscreen_fbo->release();
-
 }
 
 void TriangleWidget::updateSharedMemory()
@@ -237,3 +248,62 @@ void TriangleWidget::updateSharedMemory()
 
     sharedMemory.unlock();
 }
+
+// void TriangleWidget::updateSharedMemory()
+// {
+
+//     GLuint textureId = offscreen_fbo->texture();
+
+//     if (textureId != 0) {
+
+//         if (!sharedMemory.lock()) {
+//             qDebug() << "Unable to lock shared memory.";
+//             return;
+//         }
+
+//         QSize textureSize = offscreen_fbo->size();
+
+//         // Rozmiary tekstury
+//         int textureWidth = textureSize.width();
+//         int textureHeight = textureSize.height();
+
+//         // Odczytaj dane tekstury bezpośrednio do pamięci współdzielonej
+//         glBindTexture(GL_TEXTURE_2D, textureId);
+//         glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, sharedMemory.data());
+
+//         // Zwolnij pamięć współdzieloną
+//         sharedMemory.unlock();
+//     } else {
+//         qDebug() << "Failed to get texture from framebuffer object.";
+//     }
+// }
+
+// void TriangleWidget::updateSharedMemory()
+// {
+//     // Upewnij się, że framebuffer jest bindowany
+//     offscreen_fbo->bind();
+
+//     // Rozmiary okna
+//     int w = offscreen_fbo->width();
+//     int h = offscreen_fbo->height();
+
+//     // Upewnij się, że pamięć współdzielona jest zablokowana przed zapisem
+//     if (!sharedMemory.lock()) {
+//         qDebug() << "Unable to lock shared memory.";
+//         return;
+//     }
+
+//     // Pobierz wskaźnik do danych pamięci współdzielonej
+//     char *to = static_cast<char*>(sharedMemory.data());
+
+//     // Odczytaj piksele z FBO do pamięci współdzielonej
+//     glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, to);
+
+//     // Zwolnij pamięć współdzieloną
+//     sharedMemory.unlock();
+
+//     // Odwiąż framebuffer
+//     offscreen_fbo->release();
+// }
+
+

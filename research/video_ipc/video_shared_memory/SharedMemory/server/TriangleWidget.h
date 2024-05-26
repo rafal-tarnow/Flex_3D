@@ -44,7 +44,8 @@ private:
     QOffscreenSurface *offscreenSurface;
     QOpenGLContext *offscreenContext;
     QOpenGLFramebufferObject *offscreen_fbo;
-    float angle;
+    float onscreen_angle;
+    float offscreen_angle;
     bool offscreen;
 
     const char* vertexShaderSource = R"(

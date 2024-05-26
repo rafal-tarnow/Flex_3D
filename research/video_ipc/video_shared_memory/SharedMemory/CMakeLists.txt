@@ -13,19 +13,15 @@ add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui OpenGL OpenGLWidgets Widgets)
-#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets OpenGLWidgets)
-#find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGLWidgets)
+
+set(PROJECT_COMMON_SOURCES
+    config.hpp
+)
 
 set(PROJECT_SERVER_SOURCES
     server/main_server.cpp
     server/TriangleWidget.h
     server/TriangleWidget.cpp
-)
-
-
-qt_add_executable(SharedMemoryServer
-    MANUAL_FINALIZATION
-    ${PROJECT_SERVER_SOURCES}
 )
 
 set(PROJECT_CLIENT_SOURCES
@@ -34,9 +30,16 @@ set(PROJECT_CLIENT_SOURCES
     client/ClientWidget.cpp
 )
 
+qt_add_executable(SharedMemoryServer
+    MANUAL_FINALIZATION
+    ${PROJECT_SERVER_SOURCES}
+    ${PROJECT_COMMON_SOURCES}
+)
+
 qt_add_executable(SharedMemoryClient
     MANUAL_FINALIZATION
     ${PROJECT_CLIENT_SOURCES}
+    ${PROJECT_COMMON_SOURCES}
 )
 
 

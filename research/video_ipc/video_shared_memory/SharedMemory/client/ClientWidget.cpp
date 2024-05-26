@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QImage>
+#include "../config.hpp"
 
 ClientWidget::ClientWidget(QWidget *parent)
     : QWidget(parent), sharedMemory("TriangleSharedMemory")
@@ -36,7 +37,7 @@ void ClientWidget::updateImage()
         return;
     }
 
-    QImage image(reinterpret_cast<const uchar*>(sharedMemory.constData()), 1700, 900, QImage::Format_RGBA8888);
+    QImage image(reinterpret_cast<const uchar*>(sharedMemory.constData()), WIDTH, HEIGHT, QImage::Format_RGBA8888);
     QPixmap pixmap = QPixmap::fromImage(image.mirrored());
 
     imageLabel->setPixmap(pixmap);
