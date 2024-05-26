@@ -7,17 +7,21 @@
 #include <QOpenGLBuffer>
 #include <QTimer>
 #include <QSharedMemory>
+#include <QOffscreenSurface>
+#include <QOpenGLFramebufferObject>
 
 class TriangleWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 
 public:
-    TriangleWidget(QWidget *parent = nullptr);
+    TriangleWidget(bool offscreen, QWidget *parent = nullptr);
     ~TriangleWidget();
 
 protected:
     void initializeGL() override;
+    void initializeOnscreen();
+    void initializeOffscreen();
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
@@ -25,14 +29,23 @@ private slots:
     void updateRotation();
 
 private:
-    void initShaders();
+    void renderTriangleOnscreen();
+    void renderTriangleOffscreen();
+    void initOnscreenShaders();
+     void initOffscreenShaders();
     void updateSharedMemory();
 
-    QOpenGLShaderProgram *program;
-    QOpenGLBuffer vbo;
+    QOpenGLShaderProgram *onscreen_program;
+    QOpenGLShaderProgram *offscreen_program;
+    QOpenGLBuffer onscreen_vbo;
+    QOpenGLBuffer offscreen_vbo;
     QTimer *timer;
     QSharedMemory sharedMemory;
+    QOffscreenSurface *offscreenSurface;
+    QOpenGLContext *offscreenContext;
+    QOpenGLFramebufferObject *offscreen_fbo;
     float angle;
+    bool offscreen;
 
     const char* vertexShaderSource = R"(
         #version 330 core

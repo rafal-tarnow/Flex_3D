@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    TriangleWidget w;
+    TriangleWidget w(true);
     w.resize(1700, 900);
     w.show();
 
