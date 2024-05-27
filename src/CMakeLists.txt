@@ -3,11 +3,10 @@ cmake_minimum_required(VERSION 3.16)
 project(Flex3D-app VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(Qt6 REQUIRED COMPONENTS Core QuickControls2 Quick3D WebEngineQuick WebView)
-
-
 
 qt_standard_project_setup(REQUIRES 6.5)
 
