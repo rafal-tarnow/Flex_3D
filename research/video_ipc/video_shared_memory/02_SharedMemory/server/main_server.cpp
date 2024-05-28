@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 
     TriangleWidget w(false);
     w.resize(WIDTH, HEIGHT);
-    w.show();
+    //w.show();
 
     return a.exec();
 }

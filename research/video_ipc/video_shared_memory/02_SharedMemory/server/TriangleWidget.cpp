@@ -5,11 +5,11 @@
 #include <QApplication>
 #include <QOpenGLFramebufferObjectFormat>
 #include <QOpenGLTexture>
+#include <QElapsedTimer>
 #include "../config.hpp"
 
 TriangleWidget::TriangleWidget(bool offscreen, QWidget *parent)
-    : QOpenGLWidget(parent), onscreen_angle(0.0f), offscreen_angle(0.0f), onscreen_program(nullptr),offscreen_program(nullptr), sharedMemory("TriangleSharedMemory"),
-    offscreen(offscreen), offscreen_fbo(nullptr)
+    : QOpenGLWidget(parent), onscreen_angle(0.0f), onscreen_program(nullptr), sharedMemory("TriangleSharedMemory")
 {
     // if (!sharedMemory.create(WIDTH * HEIGHT * 4)) {
     //     qDebug() << "Unable to create shared memory segment.";
@@ -37,12 +37,6 @@ TriangleWidget::~TriangleWidget()
     delete onscreen_program;
     doneCurrent();
     delete timer;
-
-
-    delete offscreen_fbo;
-    delete offscreenSurface;
-    delete offscreenContext;
-
 }
 
 void TriangleWidget::initializeGL()
@@ -52,37 +46,40 @@ void TriangleWidget::initializeGL()
     makeCurrent();
     initializeOnscreen();
 
-    //Offscreen surface
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    offscreenSurface = new QOffscreenSurface();
-    offscreenSurface->setFormat(format);
-    offscreenSurface->create();
+    // //Offscreen surface
+    // QSurfaceFormat format;
+    // format.setDepthBufferSize(24);
+    // offscreenSurface = new QOffscreenSurface();
+    // offscreenSurface->setFormat(format);
+    // offscreenSurface->create();
 
-    //opengl context
-    offscreenContext = new QOpenGLContext();
-    offscreenContext->setFormat(format);
-    offscreenContext->create();
-    //offscreenContext->makeCurrent(offscreenSurface);
+    // //opengl context
+    // offscreenContext = new QOpenGLContext();
+    // offscreenContext->setFormat(format);
+    // offscreenContext->create();
+    // offscreenContext->makeCurrent(offscreenSurface);
 
-    //framebuffer object
-    makeCurrent();
-    QOpenGLFramebufferObjectFormat fboFormat;
-    fboFormat.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    offscreen_fbo = new QOpenGLFramebufferObject(width(), height(), fboFormat);
-    initializeOffscreen();
+    // //framebuffer object
+    // //makeCurrent();
+    // QOpenGLFramebufferObjectFormat fboFormat;
+    // fboFormat.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    // offscreen_fbo = new QOpenGLFramebufferObject(width(), height(), fboFormat);
+    // initializeOffscreen();
 }
 
 void TriangleWidget::initializeOnscreen()
 {
-    // Inicjalizacja shaderów
-    initOnscreenShaders();
+    onscreen_program = new QOpenGLShaderProgram();
+    onscreen_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
+    onscreen_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
+    onscreen_program->link();
+    onscreen_program->bind();
 
     // Bufor wierzchołków
     GLfloat vertices[] = {
         0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f
+        1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f
     };
 
     onscreen_vbo.create();
@@ -99,109 +96,18 @@ void TriangleWidget::initializeOnscreen()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void TriangleWidget::initializeOffscreen()
-{
-    // Inicjalizacja shaderów
-    initOffscreenShaders();
-
-    // Bufor wierzchołków
-    GLfloat vertices[] = {
-        // Pozycje            // Kolory
-        -1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
-        1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f
-    };
-
-    GLuint indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    offscreen_vbo.create();
-    offscreen_vbo.bind();
-    offscreen_vbo.allocate(vertices, sizeof(vertices));
-
-    // Element Buffer Object (EBO) dla kwadratu
-    GLuint ebo;
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Atrybuty wierzchołków
-    offscreen_program->enableAttributeArray(0);
-    offscreen_program->setAttributeBuffer(0, GL_FLOAT, 0, 3, 6 * sizeof(GLfloat));
-
-    offscreen_program->enableAttributeArray(1);
-    offscreen_program->setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(GLfloat), 3, 6 * sizeof(GLfloat));
-
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-}
-
-void TriangleWidget::initOnscreenShaders()
-{
-    onscreen_program = new QOpenGLShaderProgram();
-    onscreen_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-    onscreen_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-    onscreen_program->link();
-    onscreen_program->bind();
-}
-
-void TriangleWidget::initOffscreenShaders()
-{
-    offscreen_program = new QOpenGLShaderProgram();
-    offscreen_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-    offscreen_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-    offscreen_program->link();
-    offscreen_program->bind();
-}
-
 void TriangleWidget::resizeGL(int w, int h)
 {
     makeCurrent();
     glViewport(0, 0, w, h);
-
-    //offscreenContext->makeCurrent(offscreenSurface);
-    //glViewport(0, 0, w, h);
-    delete offscreen_fbo;
-    //framebuffer object
-    QOpenGLFramebufferObjectFormat fboFormat;
-    fboFormat.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    offscreen_fbo = new QOpenGLFramebufferObject(width(), height(), fboFormat);
 }
 
 void TriangleWidget::paintGL()
 {
     qDebug() << __FUNCTION__;
-    renderTriangleOnscreen();
-}
+   // renderTriangleOnscreen();
 
-void TriangleWidget::updateRotation()
-{
-    qDebug() << __FUNCTION__;
-    onscreen_angle += 1.0f;
-    if (onscreen_angle >= 360.0f) {
-        onscreen_angle = 0.0f;
-    }
-
-    offscreen_angle += 1.0f;
-    if (offscreen_angle >= 360.0f) {
-        offscreen_angle = 0.0f;
-    }
-
-    update();
-    qDebug() << "post event";
-    //renderTriangleOffscreen();
-    updateSharedMemory();
-}
-
-void TriangleWidget::renderTriangleOnscreen()
-{
-    static int i = 0;
-    qDebug() << __FUNCTION__ << " " << i++;
-
-    makeCurrent();
-    offscreen_fbo->bind();
+    //makeCurrent();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -218,17 +124,38 @@ void TriangleWidget::renderTriangleOnscreen()
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    offscreen_fbo->release();
 }
 
-void TriangleWidget::renderTriangleOffscreen()
+void TriangleWidget::updateRotation()
 {
+    qDebug() << __FUNCTION__;
+    onscreen_angle += 1.0f;
+    if (onscreen_angle >= 360.0f) {
+        onscreen_angle = 0.0f;
+    }
+
+    update();
+    qDebug() << "post event";
+    //renderTriangleOffscreen();
+    updateSharedMemory();
+}
+
+void TriangleWidget::renderTriangleOnscreen()
+{
+    static int i = 0;
+    qDebug() << __FUNCTION__ << " " << i++;
+
 
 }
 
 void TriangleWidget::updateSharedMemory()
 {
-    QImage image(offscreen_fbo->toImage());
+    QElapsedTimer timer;
+    timer.start();  // Rozpoczęcie pomiaru czasu
+
+
+    //QImage image(offscreen_fbo->toImage());
+    QImage image(this->grabFramebuffer());
 
     if (!sharedMemory.lock()) {
         qDebug() << "Unable to lock shared memory.";
@@ -243,6 +170,8 @@ void TriangleWidget::updateSharedMemory()
     memcpy(to, from, qMin(sharedMemory.size(), static_cast<int>(image.sizeInBytes())));
 
     sharedMemory.unlock();
+
+    qDebug() << "Czas wykonania funkcji:" << timer.elapsed() << "ms";
 }
 
 // void TriangleWidget::updateSharedMemory()

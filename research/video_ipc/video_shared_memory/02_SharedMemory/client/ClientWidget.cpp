@@ -42,7 +42,18 @@ void ClientWidget::updateImage()
     qDebug() << "Client image.sizeInBytes() = " << image.sizeInBytes();
     qDebug() << "Client sharedMemory.size() = " << sharedMemory.size();
     QPixmap pixmap = QPixmap::fromImage(image);
-    qDebug() << "Pixmap";
+    // qDebug() << "Pixmap";
+
+    static bool imageSaved = false;
+
+    if (!imageSaved) {
+        if (image.save("C:/Users/rafal/Documents/Flex_3D/research/video_ipc/video_shared_memory/02_SharedMemory/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/image.png")) {
+            qDebug() << "Image saved successfully.";
+        } else {
+            qDebug() << "Failed to save the image.";
+        }
+        imageSaved = true;
+    }
 
     imageLabel->setPixmap(pixmap);
 

@@ -9,17 +9,17 @@ int main(int argc, char *argv[])
 
     ClientWidget w;
     w.resize(WIDTH, HEIGHT);
-    w.show();    
+    w.show();
 
-    const QUrl url(QStringLiteral("qrc:/client/Main.qml"));
-    QQmlApplicationEngine engine;
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &a,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
-    engine.load(url);
+    // const QUrl url(QStringLiteral("qrc:/client/Main.qml"));
+    // QQmlApplicationEngine engine;
+    // QObject::connect(
+    //     &engine,
+    //     &QQmlApplicationEngine::objectCreationFailed,
+    //     &a,
+    //     []() { QCoreApplication::exit(-1); },
+    //     Qt::QueuedConnection);
+    // engine.load(url);
 
 
     return a.exec();

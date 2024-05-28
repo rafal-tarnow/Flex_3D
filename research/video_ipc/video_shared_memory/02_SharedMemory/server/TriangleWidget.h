@@ -21,7 +21,6 @@ public:
 protected:
     void initializeGL() override;
     void initializeOnscreen();
-    void initializeOffscreen();
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
@@ -30,23 +29,14 @@ private slots:
 
 private:
     void renderTriangleOnscreen();
-    void renderTriangleOffscreen();
-    void initOnscreenShaders();
-     void initOffscreenShaders();
     void updateSharedMemory();
 
     QOpenGLShaderProgram *onscreen_program;
-    QOpenGLShaderProgram *offscreen_program;
     QOpenGLBuffer onscreen_vbo;
-    QOpenGLBuffer offscreen_vbo;
+
     QTimer *timer;
     QSharedMemory sharedMemory;
-    QOffscreenSurface *offscreenSurface;
-    QOpenGLContext *offscreenContext;
-    QOpenGLFramebufferObject *offscreen_fbo;
     float onscreen_angle;
-    float offscreen_angle;
-    bool offscreen;
 
     const char* vertexShaderSource = R"(
         #version 330 core
