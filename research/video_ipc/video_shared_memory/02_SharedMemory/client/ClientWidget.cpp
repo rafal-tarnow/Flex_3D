@@ -2,7 +2,7 @@
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QImage>
-#include "../config.hpp"
+#include <cstring> // for memcpy
 
 ClientWidget::ClientWidget(QWidget *parent)
     : QWidget(parent), sharedMemory("TriangleSharedMemory")
@@ -37,12 +37,33 @@ void ClientWidget::updateImage()
         return;
     }
 
+    // Read width and height from shared memory
+    const char *from = static_cast<const char*>(sharedMemory.constData());
+    uint32_t width;
+    uint32_t height;
+    memcpy(&width, from, sizeof(width));
+    memcpy(&height, from + sizeof(width), sizeof(height));
 
-    QImage image(reinterpret_cast<const uchar*>(sharedMemory.constData()), WIDTH, HEIGHT, QImage::Format_ARGB32_Premultiplied);
+    qDebug() << "Width = " << width;
+    qDebug() << "Height = " << height;
+
+    // Ensure we have enough data for the image
+    int headerSize = sizeof(width) + sizeof(height);
+    int imageSize = sharedMemory.size() - headerSize;
+    if (imageSize < static_cast<int>(width * height * 4)) {
+        qDebug() << "Shared memory segment does not contain enough data.";
+        sharedMemory.unlock();
+        sharedMemory.detach();
+        return;
+    }
+
+    // Create image from shared memory data
+    QImage image(reinterpret_cast<const uchar*>(from + headerSize), width, height, QImage::Format_ARGB32_Premultiplied);
+
     qDebug() << "Client image.sizeInBytes() = " << image.sizeInBytes();
     qDebug() << "Client sharedMemory.size() = " << sharedMemory.size();
+
     QPixmap pixmap = QPixmap::fromImage(image);
-    // qDebug() << "Pixmap";
 
     static bool imageSaved = false;
 
@@ -59,4 +80,7 @@ void ClientWidget::updateImage()
 
     sharedMemory.unlock();
     sharedMemory.detach();
+    // if(width != this->width() || height != this->height()){
+    //     resize(width, height);
+    // }
 }
