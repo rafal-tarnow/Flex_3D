@@ -20,6 +20,11 @@ class ScadControllerServer : public QObject {
         CMD_RESIZE
     };
 
+    struct State {
+        uint32_t width;
+        uint32_t height;
+    };
+
 public:
     explicit ScadControllerServer(QObject *parent = nullptr);
     ~ScadControllerServer();
@@ -28,6 +33,7 @@ public:
     Q_INVOKABLE void show();
     Q_INVOKABLE void hide();
     Q_INVOKABLE void resizeF(float width, float height);
+    Q_INVOKABLE void resize(uint32_t width, uint32_t height);
     Q_INVOKABLE void openFile(const QString &filePath);
 
 signals:
@@ -38,6 +44,9 @@ private slots:
     void readClientData();
 
 private:
+    void updateScadState();
+    void sendResizeCommand();
+    State state;
     QLocalServer *server;
     QLocalSocket *clientSocket;
 };

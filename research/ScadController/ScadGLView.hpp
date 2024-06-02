@@ -58,6 +58,9 @@ public:
             return QPixmap();;
         }
 
+        qDebug() << "requestedSize.width() " << requestedSize.width();
+        qDebug() << "requestedSize.height() " << requestedSize.height();
+
         // Read width and height from shared memory
         const char *from = static_cast<const char*>(sharedMemory.constData());
         uint32_t width;

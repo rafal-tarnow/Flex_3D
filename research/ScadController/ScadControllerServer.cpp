@@ -24,6 +24,7 @@ ScadControllerServer::~ScadControllerServer() {
 void ScadControllerServer::handleNewConnection() {
     clientSocket = server->nextPendingConnection();
     connect(clientSocket, &QLocalSocket::readyRead, this, &ScadControllerServer::readClientData);
+    updateScadState();
     qDebug() << "Client connected...";
 }
 
@@ -48,6 +49,11 @@ void ScadControllerServer::readClientData() {
             return;
         }
     }
+}
+
+void ScadControllerServer::updateScadState()
+{
+    sendResizeCommand();
 }
 
 void ScadControllerServer::preview() {
@@ -95,13 +101,14 @@ void ScadControllerServer::hide()
 
 void ScadControllerServer::resizeF(float width, float height)
 {
-    if (clientSocket && clientSocket->isOpen()) {
-        QDataStream out(clientSocket);
-        out.setVersion(QDataStream::Qt_5_15);
-        out << uint8_t(CMD_RESIZE) << uint32_t(width) << uint32_t(height);
-        clientSocket->flush();
-        qDebug() << "Resize command sent to client with width and height :" << uint32_t(width) << " " << uint32_t(height);
-    }
+    resize(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+}
+
+void ScadControllerServer::resize(uint32_t width, uint32_t height)
+{
+    state.width = width;
+    state.height = height;
+    sendResizeCommand();
 }
 
 void ScadControllerServer::openFile(const QString &filePath) {
@@ -111,5 +118,16 @@ void ScadControllerServer::openFile(const QString &filePath) {
         out << uint8_t(CMD_OPEN_FILE) << filePath;
         clientSocket->flush();
         qDebug() << "OpenFile command sent to client with path:" << filePath;
+    }
+}
+
+void ScadControllerServer::sendResizeCommand()
+{
+    if (clientSocket && clientSocket->isOpen()) {
+        QDataStream out(clientSocket);
+        out.setVersion(QDataStream::Qt_5_15);
+        out << uint8_t(CMD_RESIZE) << state.width << state.height;
+        clientSocket->flush();
+        qDebug() << "Resize command sent to client with width and height :" << state.width << " " << state.height;
     }
 }
