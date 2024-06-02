@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     QSharedPointer<ServerControllerReplica> ptr;
     QRemoteObjectNode repNode; // create remote object node
-    repNode.connectToNode(QUrl(QStringLiteral("local:replica"))); // connect with remote host node
+    repNode.connectToNode(QUrl(QStringLiteral("local:openScadControllerReplica"))); // connect with remote host node
     ptr.reset(repNode.acquire<ServerControllerReplica>()); // acquire replica of source from host node
     Client rswitch(ptr); // create cl0 pass reference of replica to it
 

@@ -1,15 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "ServerController.hpp"
+#include <ScadControllerClient.hpp>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
-
-    ServerController srcServerController; // create simple switch
-    QRemoteObjectHost srcNode(QUrl(QStringLiteral("local:openScadControllerReplica"))); // create host node without Registry
-    srcNode.enableRemoting(&srcServerController);
 
     QQmlApplicationEngine engine;
     QObject::connect(
@@ -18,7 +13,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("RemoteObjects", "Main");
+    engine.loadFromModule("LocalSocketIPCClient", "Main");
 
     return app.exec();
 }

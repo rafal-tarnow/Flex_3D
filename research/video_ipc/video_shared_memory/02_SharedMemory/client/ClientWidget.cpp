@@ -7,6 +7,12 @@
 ClientWidget::ClientWidget(QWidget *parent)
     : QWidget(parent), sharedMemory("TriangleSharedMemory")
 {
+    // Alokowanie pamięci współdzielonej
+    if (!sharedMemory.create(100000000)) {
+        qDebug() << "Unable to create shared memory segment.";
+    }
+    qDebug() << "sharedMemory.size()" << sharedMemory.size();
+
     imageLabel = new QLabel(this);
     imageLabel->setAlignment(Qt::AlignCenter);
 
@@ -26,14 +32,8 @@ ClientWidget::~ClientWidget()
 
 void ClientWidget::updateImage()
 {
-    if (!sharedMemory.attach()) {
-        qDebug() << "Unable to attach to shared memory segment.";
-        return;
-    }
 
     if (!sharedMemory.lock()) {
-        qDebug() << "Unable to lock shared memory.";
-        sharedMemory.detach();
         return;
     }
 
@@ -53,33 +53,23 @@ void ClientWidget::updateImage()
     if (imageSize < static_cast<int>(width * height * 4)) {
         qDebug() << "Shared memory segment does not contain enough data.";
         sharedMemory.unlock();
-        sharedMemory.detach();
         return;
     }
 
     // Create image from shared memory data
     QImage image(reinterpret_cast<const uchar*>(from + headerSize), width, height, QImage::Format_ARGB32_Premultiplied);
 
+    sharedMemory.unlock();
+
     qDebug() << "Client image.sizeInBytes() = " << image.sizeInBytes();
     qDebug() << "Client sharedMemory.size() = " << sharedMemory.size();
 
     QPixmap pixmap = QPixmap::fromImage(image);
 
-    static bool imageSaved = false;
-
-    if (!imageSaved) {
-        if (image.save("C:/Users/rafal/Documents/Flex_3D/research/video_ipc/video_shared_memory/02_SharedMemory/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/image.png")) {
-            qDebug() << "Image saved successfully.";
-        } else {
-            qDebug() << "Failed to save the image.";
-        }
-        imageSaved = true;
-    }
-
     imageLabel->setPixmap(pixmap);
 
-    sharedMemory.unlock();
-    sharedMemory.detach();
+
+
     // if(width != this->width() || height != this->height()){
     //     resize(width, height);
     // }
