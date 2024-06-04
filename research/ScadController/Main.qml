@@ -9,44 +9,42 @@ Window {
     height: 280
     visible: true
     title: qsTr("Scad Controller Server")
-    flags: Qt.WindowStaysOnTopHint
 
-    Column{
+    Column {
         id: guiColumn
-        Button{
+        Button {
             text: "Preview"
             onClicked: {
                 ScadControllerServer.preview()
             }
         }
-        Button{
-            text:"Render"
+        Button {
+            text: "Render"
             onClicked: {
                 ScadControllerServer.render()
             }
         }
-        Button{
-            text:"Show"
+        Button {
+            text: "Show"
             onClicked: {
                 ScadControllerServer.show()
             }
         }
-        Button{
-            text:"Hide"
+        Button {
+            text: "Hide"
             onClicked: {
                 ScadControllerServer.hide()
             }
         }
-        Button{
-            text:"Open"
+        Button {
+            text: "Open"
             onClicked: {
                 ScadControllerServer.openFile("Dupa dupa dupa test test test 3")
             }
         }
     }
 
-
-    Rectangle{
+    Rectangle {
         anchors.fill: scadImage
         color: "green"
     }
@@ -76,14 +74,13 @@ Window {
             ScadControllerServer.resizeF(width, height)
         }
 
-        Connections{
+        Connections {
             target: ScadControllerServer
             function onUpdateGLView() {
-                console.log("Server recived signal UpdateGLView");
-                scadImage.source = "";
+                console.log("Server recived signal UpdateGLView")
+                scadImage.source = ""
                 scadImage.source = "image://colors/yellow"
             }
         }
-
     }
 }
