@@ -63,7 +63,6 @@ void ScadControllerServer::handleNewConnection() {
 
 void ScadControllerServer::readClientData() {
     // Implementacja funkcji do czytania danych od klienta, jeśli potrzebna
-    qDebug() << __PRETTY_FUNCTION__;
     QDataStream in(clientSocket);
     in.setVersion(QDataStream::Qt_5_15);
 
