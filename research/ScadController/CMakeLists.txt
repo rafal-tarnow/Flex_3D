@@ -21,6 +21,8 @@ qt_add_qml_module(ScadControllerApp
         SOURCES ScadControllerServer.cpp
         SOURCES ScadGLView.hpp
         SOURCES ScadGLView.cpp
+        SOURCES ScadImage.hpp
+        SOURCES ScadImage.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -36,6 +38,7 @@ set_target_properties(ScadControllerApp PROPERTIES
 
 target_link_libraries(ScadControllerApp
     PRIVATE Qt6::Quick
+    Qt6::QuickPrivate
 )
 
 include(GNUInstallDirs)

@@ -11,59 +11,38 @@ Window {
     title: qsTr("Scad Controller Server")
     flags: Qt.WindowStaysOnTopHint
 
-    ScadControllerServer{
-        id: scadServer
-        onUpdateGLView : {
-            console.log("Server recived signal UpdateGLView");
-            scadImage.source = "";
-            scadImage.source = "image://colors/yellow"
-        }
-    }
-
     Column{
         id: guiColumn
         Button{
             text: "Preview"
             onClicked: {
-                scadServer.preview()
+                ScadControllerServer.preview()
             }
         }
         Button{
             text:"Render"
             onClicked: {
-                scadServer.render()
+                ScadControllerServer.render()
             }
         }
         Button{
             text:"Show"
             onClicked: {
-                scadServer.show()
+                ScadControllerServer.show()
             }
         }
         Button{
             text:"Hide"
             onClicked: {
-                scadServer.hide()
+                ScadControllerServer.hide()
             }
         }
         Button{
             text:"Open"
             onClicked: {
-                scadServer.openFile("Dupa dupa dupa test test test 3")
+                ScadControllerServer.openFile("Dupa dupa dupa test test test 3")
             }
         }
-        // RangeSlider {
-        //     from: 50
-        //     to: 1000
-        //     first.value: 240
-        //     second.value: 320
-        //     first.onMoved: {
-        //         scadServer.resizeF(second.value, first.value)
-        //     }
-        //     second.onMoved: {
-        //         scadServer.resizeF(second.value, first.value)
-        //     }
-        // }
     }
 
 
@@ -72,7 +51,7 @@ Window {
         color: "green"
     }
 
-    Image {
+    ScadImage {
         id: scadImage
         anchors.left: guiColumn.right
         anchors.top: parent.top
@@ -82,18 +61,28 @@ Window {
         cache: false
 
         onWidthChanged: {
-            scadServer.resizeF(width, height)
+            ScadControllerServer.resizeF(width, height)
             //imageSizeChanged(width, height)
             console.log("Width changed to " + width)
         }
 
         onHeightChanged: {
-            scadServer.resizeF(width, height)
+            ScadControllerServer.resizeF(width, height)
             //imageSizeChanged(width, height)
             console.log("Height changed to " + height)
         }
+
         Component.onCompleted: {
-            scadServer.resizeF(width, height)
+            ScadControllerServer.resizeF(width, height)
+        }
+
+        Connections{
+            target: ScadControllerServer
+            function onUpdateGLView() {
+                console.log("Server recived signal UpdateGLView");
+                scadImage.source = "";
+                scadImage.source = "image://colors/yellow"
+            }
         }
 
     }

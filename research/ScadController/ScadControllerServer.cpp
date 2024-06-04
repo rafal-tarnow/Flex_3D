@@ -2,6 +2,38 @@
 #include <QDataStream>
 #include <QDebug>
 
+QJSEngine * ScadControllerServer::s_engine = nullptr;
+ScadControllerServer* ScadControllerServer::instance = nullptr;
+QMutex ScadControllerServer::mutex;
+
+ScadControllerServer* ScadControllerServer::getInstance(QObject *parent) {
+    QMutexLocker locker(&mutex);
+    if (instance == nullptr) {
+        instance = new ScadControllerServer(parent);
+    }
+    return instance;
+}
+
+ScadControllerServer *ScadControllerServer::create(QQmlEngine *, QJSEngine *engine){
+    getInstance(engine);
+
+    //create method implementation form qt documentation
+    // The instance has to exist before it is used. We cannot replace it.
+    Q_ASSERT(instance);
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(engine->thread() == instance->thread());
+    // There can only be one engine accessing the singleton.
+    if (s_engine)
+        Q_ASSERT(engine == s_engine);
+    else
+        s_engine = engine;
+    // Explicitly specify C++ ownership so that the engine doesn't delete
+    // the instance.
+    QJSEngine::setObjectOwnership(instance,
+                                  QJSEngine::CppOwnership);
+    return instance;
+}
+
 ScadControllerServer::ScadControllerServer(QObject *parent)
     : QObject(parent), clientSocket(nullptr) {
     QLocalServer::removeServer("scad_server_test"); //Removes any server instance that might cause a call to listen() to fail and returns true if successful; otherwise returns false. This function is meant to recover from a crash, when the previous server instance has not been cleaned up
@@ -16,6 +48,7 @@ ScadControllerServer::ScadControllerServer(QObject *parent)
 }
 
 ScadControllerServer::~ScadControllerServer() {
+    clientSocket->close();
     if (server->isListening()) {
         server->close();
     }
@@ -118,6 +151,60 @@ void ScadControllerServer::openFile(const QString &filePath) {
         out << uint8_t(CMD_OPEN_FILE) << filePath;
         clientSocket->flush();
         qDebug() << "OpenFile command sent to client with path:" << filePath;
+    }
+}
+
+void ScadControllerServer::sendMouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (clientSocket && clientSocket->isOpen()) {
+        QDataStream out(clientSocket);
+        out.setVersion(QDataStream::Qt_5_15);
+        out << uint8_t(CMD_MOUSE_DBL_CLICK) << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+        clientSocket->flush();
+        qDebug() << "MouseDoubleClickEvent command sent to client with data: " << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+    }
+}
+
+void ScadControllerServer::sendMouseMoveEvent(QMouseEvent *event)
+{
+    if (clientSocket && clientSocket->isOpen()) {
+        QDataStream out(clientSocket);
+        out.setVersion(QDataStream::Qt_5_15);
+        out << uint8_t(CMD_MOUSE_MOVE) << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+        clientSocket->flush();
+        qDebug() << "MouseMoveEvent command sent to client with data: " << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+    }
+}
+
+void ScadControllerServer::sendMousePressEvent(QMouseEvent *event)
+{
+    if (clientSocket && clientSocket->isOpen()) {
+        QDataStream out(clientSocket);
+        out.setVersion(QDataStream::Qt_5_15);
+        out << uint8_t(CMD_MOUSE_PRESS) << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+        clientSocket->flush();
+        qDebug() << "MousePressEvent command sent to client with data: " << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+    }
+}
+
+void ScadControllerServer::sendMouseReleaseEvent(QMouseEvent *event)
+{
+    if (clientSocket && clientSocket->isOpen()) {
+        QDataStream out(clientSocket);
+        out.setVersion(QDataStream::Qt_5_15);
+        out << uint8_t(CMD_MOUSE_RELEASE) << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+        clientSocket->flush();
+        qDebug() << "MouseReleaseEvent command sent to client with data: " << event->type() << event->position() << event->button() << event->buttons() << event->modifiers();
+    }
+}
+
+void ScadControllerServer::sendWheelEvent(QWheelEvent *event)
+{
+    if (clientSocket && clientSocket->isOpen()) {
+        QDataStream out(clientSocket);
+        out.setVersion(QDataStream::Qt_5_15);
+        out << uint8_t(CMD_WHEEL) << event->position() << event->globalPosition() << event->pixelDelta() << event->angleDelta() << event->buttons() << event->modifiers() << event->phase() << event->inverted();
+        clientSocket->flush();
     }
 }
 
